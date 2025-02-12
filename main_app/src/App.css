@@ -28,6 +28,22 @@
   color: #61dafb;
 }
 
+.drag {
+  padding: '8px';
+  margin: '4px';
+  background-color: 'lightblue';
+  cursor: 'move';
+}
+
+.drop {
+  height: '200px';
+  width: '200px';
+  border: '2px dashed gray';     
+  display: 'flex';
+  justify-content: 'center';
+  align-items: 'center';
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
