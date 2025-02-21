@@ -1,22 +1,18 @@
-// DraggableItem.js
-import React from 'react';
 import { useDrag } from 'react-dnd';
 
-const DraggableItem = ({ id, text }) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'ITEM',
+//Allows an image to be dragged onto the drop zone.
+const DraggableItem = ({ id, imageSrc }) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: 'IMAGE',
     item: { id },
     collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
+      isDragging: monitor.isDragging(),
     }),
-  }));
+  });
 
   return (
-    <div className='drag'
-      ref={drag}
-      style={{opacity: isDragging ? 0.5 : 1}}
-    >
-      {text}
+    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+      <img class='plants' src={imageSrc} alt="Draggable"/>
     </div>
   );
 };
