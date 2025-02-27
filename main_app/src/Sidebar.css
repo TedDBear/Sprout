@@ -17,4 +17,8 @@
     list-style-type: none; /* Remove list bullets */
     padding: 0;
   }
+
+  #plant-description{
+    color: white;
+  }
   

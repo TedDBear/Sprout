@@ -37,19 +37,14 @@
   flex-direction: 'row';
 }
 
-.drop {
-  height: '200px';
-  width: '200px';
-  border: '2px dashed gray';     
-  display: 'flex';
-  justify-content: 'center';
-  align-items: 'center';
-}
-
 
 .plants{
   width: 100px;
   height: 100px;
+}
+
+img.plants:hover {
+  cursor: pointer;
 }
 
 
