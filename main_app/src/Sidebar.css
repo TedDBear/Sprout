@@ -8,12 +8,13 @@
     width: 20vw; /* Width of the sidebar */
     background-color: #111; /* Dark background color */
     padding-top: 20px; /* Padding at the top */
+    flex-wrap: nowrap;
+    overflow-y: scroll;
   }
   
   .sidebar ul {
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: scroll; /* Adds a scroll bar to the vegetables*/
     list-style-type: none; /* Remove list bullets */
     padding: 0;
   }
