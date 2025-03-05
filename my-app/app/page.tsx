@@ -14,7 +14,7 @@ const plants = [
 ];
 
 export default function SproutGarden() {
-  const [gardenSize, setGardenSize] = useState({ width: 9, height: 9 });
+  const [gardenSize, setGardenSize] = useState({ width: 10, height: 10 });
   const [gardenPlants, setGardenPlants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [draggedPlant, setDraggedPlant] = useState(null);
@@ -39,6 +39,10 @@ export default function SproutGarden() {
 
     // Clean up the drag image element after the drag operation
     setTimeout(() => document.body.removeChild(dragImage), 0);
+  };
+
+  const handlePlantClick = (index) => {
+    setGardenPlants(gardenPlants.filter((_, i) => i !== index));
   };
 
   // Handle existing plant drag start in garden
@@ -87,22 +91,23 @@ export default function SproutGarden() {
 
   return (
     <div className="p-4 bg-green-50 min-h-screen">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <Button variant="outline">Back</Button>
-        <h1 className="text-3xl font-bold text-green-800">SPROUT</h1>
-        <div className="space-x-2">
-          <Button variant="outline">New Garden</Button>
-          <Button variant="outline">Watch</Button>
-          <Button variant="destructive">Clear</Button>
-        </div>
+      {/* Header Content */}
+    <div className="flex justify-between items-center mb-6 p-4 bg-white shadow-lg rounded-lg">
+      <Button variant="outline">Back</Button>
+      <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
+      <div className="space-x-2">
+        <Button variant="outline">New Garden</Button>
+        <Button variant="outline">Save Garden...</Button>
+        <Button variant="outline">Load Garden...</Button>
+        <Button variant="destructive">Clear Garden</Button>
       </div>
+    </div>
 
       {/* Main Content */}
       <div className="flex gap-4 max-w-6xl mx-auto">
         {/* Left Panel - Plants List */}
         <div className="w-1/4 bg-white p-4 rounded-lg shadow-lg">
-          <h2 className="text-lg font-semibold mb-4">Input (Sache)</h2>
+          <h2 className="text-lg font-semibold mb-4">Plant List</h2>
           <div className="flex items-center mb-4 border p-2 rounded-lg">
             <Search className="w-5 h-5 text-gray-400" />
             <Input
@@ -182,6 +187,7 @@ export default function SproutGarden() {
                 }}
                 draggable
                 onDragStart={handlePlantDragStart(index)}
+                onClick={() => handlePlantClick(index)}
               >
                 {plant.emoji}
               </div>
