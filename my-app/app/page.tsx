@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -89,6 +89,11 @@ export default function SproutGarden() {
     plant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const clearGarden = useCallback((event) => {
+      setGardenPlants([]);
+    }, [setGardenPlants]);
+  
+
   return (
     <div className="p-4 bg-green-50 min-h-screen">
       {/* Header Content */}
@@ -99,7 +104,7 @@ export default function SproutGarden() {
         <Button variant="outline">New Garden</Button>
         <Button variant="outline">Save Garden...</Button>
         <Button variant="outline">Load Garden...</Button>
-        <Button variant="destructive">Clear Garden</Button>
+        <Button variant="destructive" onClick={(event) => clearGarden(event)}>Clear Garden</Button>
       </div>
     </div>
 
