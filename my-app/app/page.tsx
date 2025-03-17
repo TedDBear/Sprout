@@ -2,80 +2,114 @@
 import React, { useState, useRef, useCallback } from "react";
 import Header from "./header";
 import LeftSidebar from "./LeftSidebar";
+import RightSidebar from "./RightSideBar";
 import GardenCanvas from "./GardenCanvas";
 import GardenSizeControls from "./GardenSizeControls";
+import tomato from "./graphics/tomato100x100.png"
+import corn from "./graphics/corn100x100.png"
+import cabbage from "./graphics/cabbage100x100.png"
 
 const plants = [
-  { name: "Tomato", emoji: "🍅", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  { name: "Potato", emoji: "🥔", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  { name: "Strawberry", emoji: "🍓", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  { name: "Lettuce", emoji: "🥬", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-  { name: "Corn", emoji: "🌽", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
+  { 
+    name: "Tomato", 
+    image: tomato,
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+  },
+  { 
+    name: "Corn", 
+    image: corn,
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+  },
+  { 
+    name: "Cabbage", 
+    image: cabbage,
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+  },
 ];
-
 export default function SproutGarden() {
   const [gardenSize, setGardenSize] = useState({ width: 10, height: 10 });
   const [gardenPlants, setGardenPlants] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [draggedPlant, setDraggedPlant] = useState(null);
   const [draggedIndex, setDraggedIndex] = useState(-1);
+  const [selectedPlant, setSelectedPlant] = useState(null);
   const dragImageRef = useRef(null);
-
+  
   // Handle plant drag start from left panel
-  const handleNewPlantDragStart = (plant) => (e) => {
-    setDraggedPlant(plant);
-    e.dataTransfer.setData("text/plain", "");
+  const handleNewPlantDragStart = (plant, imgElement) => (e) => {
+  setDraggedPlant(plant);
+  e.dataTransfer.setData("text/plain", plant.name);
+  
+  // Use the existing image element as the drag image
+  if (imgElement) {
+    // Calculate the center of the image for better positioning
+    // 8 and 8 are half the size of the typical drag icon (16x16)
+    e.dataTransfer.setDragImage(imgElement, 30, 30);
+  }
+};
 
-    // Create a hidden element to use as the drag image
-    const dragImage = document.createElement("div");
-    dragImage.textContent = plant.emoji;
-    dragImage.style.position = "absolute";
-    dragImage.style.top = "-9999px";
-    dragImage.style.fontSize = "2rem";
-    document.body.appendChild(dragImage);
 
-    // Set the drag image
-    e.dataTransfer.setDragImage(dragImage, 0, 0);
-
-    // Clean up the drag image element after the drag operation
-    setTimeout(() => document.body.removeChild(dragImage), 0);
-  };
-
-  const handlePlantClick = (index) => {
-    setGardenPlants(gardenPlants.filter((_, i) => i !== index));
+  const handlePlantClick = (index, e) => {
+    setSelectedPlant(gardenPlants[index]);
   };
 
   // Handle existing plant drag start in garden
   const handlePlantDragStart = (index) => (e) => {
     setDraggedIndex(index);
-    e.dataTransfer.setData("text/plain", "");
+    e.dataTransfer.setData("text/plain", gardenPlants[index].name);
   };
 
-  // Handle drop in garden area
   const handleDrop = (e) => {
     e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left - 20; // Adjust for emoji size
-    const y = e.clientY - rect.top - 20;
+    // Adjust position calculation based on typical plant image size (40x40 pixels)
+    const plantSize = 40;
+    const x = e.clientX - rect.left - (plantSize / 2);
+    const y = e.clientY - rect.top - (plantSize / 2);
 
     // Ensure the plant stays within the garden bounds
-    const maxX = gardenSize.width * 40 - 40; // 40px per foot, minus emoji size
-    const maxY = gardenSize.height * 40 - 40;
+    const maxX = gardenSize.width * 40 - plantSize;
+    const maxY = gardenSize.height * 40 - plantSize;
 
     const clampedX = Math.max(0, Math.min(x, maxX));
     const clampedY = Math.max(0, Math.min(y, maxY));
 
     if (draggedPlant) {
-      // Add new plant
-      setGardenPlants([...gardenPlants, { ...draggedPlant, x: clampedX, y: clampedY }]);
+      // Add new plant with unique ID
+      const newPlant = { 
+        ...draggedPlant, 
+        x: clampedX, 
+        y: clampedY,
+        id: Date.now().toString() // Add unique ID for each plant
+      };
+      setGardenPlants([...gardenPlants, newPlant]);
       setDraggedPlant(null);
+      
+      // Optionally select the newly added plant
+      setSelectedPlant(newPlant);
     } else if (draggedIndex >= 0) {
       // Move existing plant
       const newPlants = [...gardenPlants];
       newPlants[draggedIndex] = { ...newPlants[draggedIndex], x: clampedX, y: clampedY };
       setGardenPlants(newPlants);
       setDraggedIndex(-1);
+      
+      // Update selected plant if it was moved
+      if (selectedPlant && selectedPlant.id === newPlants[draggedIndex].id) {
+        setSelectedPlant(newPlants[draggedIndex]);
+      }
     }
+  };
+
+  // Handle closing the details panel
+  const handleCloseDetails = () => {
+    setSelectedPlant(null);
+  };
+  
+  // Handle deleting a plant
+  const handleDeletePlant = (plantId) => {
+    setGardenPlants(gardenPlants.filter(plant => plant.id !== plantId));
+    setSelectedPlant(null);
   };
 
   // Handle garden size change
@@ -89,9 +123,18 @@ export default function SproutGarden() {
     plant.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const clearGarden = useCallback((event) => {
-        setGardenPlants([]);
-      }, [setGardenPlants]);
+  const clearGarden = useCallback(() => {
+    setGardenPlants([]);
+    setSelectedPlant(null);
+  }, []);
+  
+  // Close details when clicking on canvas background
+  const handleCanvasClick = (e) => {
+    // Only handle clicks directly on the canvas, not on plants
+    if (e.target === e.currentTarget) {
+      setSelectedPlant(null);
+    }
+  };
 
   return (
     <div className="p-4 bg-green-50 min-h-screen">
@@ -100,28 +143,41 @@ export default function SproutGarden() {
       />
       {/* Main Content */} 
       <div className="flex gap-4 max-w-6xl mx-auto">
-      {/* Left Sidebar */}
-      <LeftSidebar
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        filteredPlants={filteredPlants}
-        handleNewPlantDragStart={handleNewPlantDragStart}
+        {/* Left Sidebar */}
+        <LeftSidebar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          filteredPlants={filteredPlants}
+          handleNewPlantDragStart={handleNewPlantDragStart}
         />
-        {/* Right Panel - Garden Area */}
+        
+        {/* Main Garden Area */}
         <div className="flex-1 bg-white p-4 rounded-lg shadow-lg">
-         <GardenSizeControls 
-          gardenSize={gardenSize}
-          handleSizeChange={handleSizeChange}
-          />
-          <GardenCanvas
+          <GardenSizeControls 
             gardenSize={gardenSize}
-            handleDrop={handleDrop}
-            gardenPlants={gardenPlants}
-            handlePlantClick={handlePlantClick}
-            handlePlantDragStart={handlePlantDragStart}
+            handleSizeChange={handleSizeChange}
+          />
+          <div onClick={handleCanvasClick}>
+            <GardenCanvas
+              gardenSize={gardenSize}
+              handleDrop={handleDrop}
+              gardenPlants={gardenPlants}
+              handlePlantClick={handlePlantClick}
+              handlePlantDragStart={handlePlantDragStart}
             />
+          </div>
         </div>
+        
+        {/* Right Sidebar - Plant Details */}
+        <RightSidebar 
+          selectedPlant={selectedPlant}
+          onClose={handleCloseDetails}
+          onDelete={handleDeletePlant}
+        />
       </div>
     </div>
   );
 }
+
+
+
