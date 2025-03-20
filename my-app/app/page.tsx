@@ -5,7 +5,6 @@ import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSideBar";
 import GardenCanvas from "./GardenCanvas";
 import GardenSizeControls from "./GardenSizeControls";
-import { toast } from "@/components/ui/use-toast";
 import corn from "./graphics/Corn.svg";
 import cabbage from "./graphics/Cabbage.svg";
 import blueberry from "./graphics/Blueberry.svg";
@@ -233,31 +232,14 @@ export default function SproutGarden() {
         // Clear selection
         setSelectedPlant(null);
         
-        // Show success message
-        toast({
-          title: "Garden Loaded",
-          description: `Successfully loaded garden with ${loadedPlants.length} plants.`,
-          variant: "success",
-        });
       } catch (error) {
         console.error("Error loading garden:", error);
         
-        // Show error message
-        toast({
-          title: "Error Loading Garden",
-          description: `Failed to load garden file: ${error.message}`,
-          variant: "destructive",
-        });
       }
     };
     
     reader.onerror = () => {
       // Show error message
-      toast({
-        title: "Error Loading Garden",
-        description: "Failed to read the garden file.",
-        variant: "destructive",
-      });
     };
     
     // Read the file as text
