@@ -9,7 +9,7 @@ export default function LeftSidebar({searchQuery, setSearchQuery, filteredPlants
   const imageRefs = useRef({});
   
   return (
-    <div className="w-72 flex-shrink-0 bg-white p-4 rounded-lg shadow-lg">
+    <div className="w-72 h-150 flex-shrink-0 bg-white p-4 rounded-lg shadow-lg overflow-y-scroll">
       <h2 className="text-lg font-semibold mb-4">Plant List</h2>
       <div className="flex items-center mb-4 border p-2 rounded-lg">
         <Search className="w-5 h-5 text-gray-400" />

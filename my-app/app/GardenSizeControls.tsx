@@ -8,7 +8,7 @@ return (
   <span className="font-medium">Height</span>
   <Input
     type="number"
-    value={gardenSize.height}
+    value={gardenSize.height - 1} // Minus 1 helps ensures position listed on the plants is consistent with the length and height displayed on the size controls.
     onChange={(e) => handleSizeChange("height", e.target.value)}
     className="w-20 text-center"
     min="5"
@@ -19,7 +19,7 @@ return (
   <span className="font-medium">Width</span>
   <Input
     type="number"
-    value={gardenSize.width}
+    value={gardenSize.width - 1} 
     onChange={(e) => handleSizeChange("width", e.target.value)}
     className="w-20 text-center"
     min="5"

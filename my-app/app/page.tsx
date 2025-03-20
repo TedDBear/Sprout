@@ -5,14 +5,17 @@ import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSideBar";
 import GardenCanvas from "./GardenCanvas";
 import GardenSizeControls from "./GardenSizeControls";
-import tomato from "./graphics/tomato100x100.png"
-import corn from "./graphics/corn100x100.png"
-import cabbage from "./graphics/cabbage100x100.png"
+import { toast } from "@/components/ui/use-toast";
+import corn from "./graphics/Corn.svg";
+import cabbage from "./graphics/Cabbage.svg";
+import blueberry from "./graphics/Blueberry.svg";
+import carrot from "./graphics/Carrot.svg";
+import garlic from "./graphics/Garlic.svg";
 
 const plants = [
   { 
-    name: "Tomato", 
-    image: tomato,
+    name: "Carrot", 
+    image: carrot,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
   },
   { 
@@ -25,7 +28,27 @@ const plants = [
     image: cabbage,
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
   },
+  {
+    name: "Blueberry",
+    image: blueberry,
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Garlic",
+    image: garlic,
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  }
 ];
+
+// Create a map of plant names to their image objects for easy lookup
+const plantImageMap = {
+  "Carrot": carrot,
+  "Corn": corn,
+  "Cabbage": cabbage,
+  "Blueberry": blueberry,
+  "Garlic": garlic
+};
+
 export default function SproutGarden() {
   const [gardenSize, setGardenSize] = useState({ width: 10, height: 10 });
   const [gardenPlants, setGardenPlants] = useState([]);
@@ -37,17 +60,15 @@ export default function SproutGarden() {
   
   // Handle plant drag start from left panel
   const handleNewPlantDragStart = (plant, imgElement) => (e) => {
-  setDraggedPlant(plant);
-  e.dataTransfer.setData("text/plain", plant.name);
-  
-  // Use the existing image element as the drag image
-  if (imgElement) {
-    // Calculate the center of the image for better positioning
-    // 8 and 8 are half the size of the typical drag icon (16x16)
-    e.dataTransfer.setDragImage(imgElement, 30, 30);
-  }
-};
-
+    setDraggedPlant(plant);
+    e.dataTransfer.setData("text/plain", plant.name);
+    
+    // Use the existing image element as the drag image
+    if (imgElement) {
+      // Calculate the center of the image for better positioning
+      e.dataTransfer.setDragImage(imgElement, 30, 30);
+    }
+  };
 
   const handlePlantClick = (index, e) => {
     setSelectedPlant(gardenPlants[index]);
@@ -114,7 +135,7 @@ export default function SproutGarden() {
 
   // Handle garden size change
   const handleSizeChange = (field, value) => {
-    const newValue = Math.max(5, Number(value)); // Ensure minimum size is 5 feet
+    const newValue = Math.max(5, Number(value) + 1); // Ensure minimum size is 5 feet
     setGardenSize((prev) => ({ ...prev, [field]: newValue }));
   };
 
@@ -136,48 +157,155 @@ export default function SproutGarden() {
     }
   };
 
+  // Save garden data to file
+  const saveGarden = useCallback(() => {
+    // Prepare the garden data
+    const gardenData = {
+      gardenSize,
+      gardenPlants: gardenPlants.map(plant => ({
+        name: plant.name,
+        x: plant.x,
+        y: plant.y,
+        id: plant.id,
+        // Exclude the image object which can't be serialized
+      }))
+    };
+    
+    // Convert to JSON
+    const gardenJson = JSON.stringify(gardenData, null, 2);
+    
+    // Create a Blob with the garden data
+    const blob = new Blob([gardenJson], { type: "application/json" });
+    
+    // Create a download link
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    
+    // Set a default filename with date
+    const date = new Date();
+    const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date.getTime().toString().padStart(2, '0')}`;
+    link.download = `sprout-garden-${dateString}.json`;
+    
+    // Append to body, click to download, then remove
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
+  }, [gardenSize, gardenPlants]);
+
+  // Load garden data from file
+  const loadGarden = useCallback((file) => {
+    const reader = new FileReader();
+    
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        
+        // Validate the data structure
+        if (!data.gardenSize || !data.gardenPlants || !Array.isArray(data.gardenPlants)) {
+          throw new Error("Invalid garden file format");
+        }
+        
+        // Set the garden size
+        setGardenSize(data.gardenSize);
+        
+        // Process the plants and restore the image objects
+        const loadedPlants = data.gardenPlants.map(plant => {
+          // Check if the plant name exists in our plant library
+          if (!plantImageMap[plant.name]) {
+            throw new Error(`Unknown plant type: ${plant.name}`);
+          }
+          
+          // Restore the image object
+          return {
+            ...plant,
+            image: plantImageMap[plant.name],
+            description: plants.find(p => p.name === plant.name)?.description || "No description available"
+          };
+        });
+        
+        // Set the garden plants
+        setGardenPlants(loadedPlants);
+        
+        // Clear selection
+        setSelectedPlant(null);
+        
+        // Show success message
+        toast({
+          title: "Garden Loaded",
+          description: `Successfully loaded garden with ${loadedPlants.length} plants.`,
+          variant: "success",
+        });
+      } catch (error) {
+        console.error("Error loading garden:", error);
+        
+        // Show error message
+        toast({
+          title: "Error Loading Garden",
+          description: `Failed to load garden file: ${error.message}`,
+          variant: "destructive",
+        });
+      }
+    };
+    
+    reader.onerror = () => {
+      // Show error message
+      toast({
+        title: "Error Loading Garden",
+        description: "Failed to read the garden file.",
+        variant: "destructive",
+      });
+    };
+    
+    // Read the file as text
+    reader.readAsText(file);
+  }, []);
+
   return (
-    <div className="p-4 bg-green-50 min-h-screen">
-      <Header  
-        clearGarden={clearGarden} 
-      />
-      {/* Main Content */} 
-      <div className="flex gap-4 max-w-6xl mx-auto">
-        {/* Left Sidebar */}
-        <LeftSidebar
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          filteredPlants={filteredPlants}
-          handleNewPlantDragStart={handleNewPlantDragStart}
+   
+      <div className="p-4 bg-green-50 min-h-screen">
+        <Header  
+          clearGarden={clearGarden}
+          saveGarden={saveGarden}
+          loadGarden={loadGarden}
         />
-        
-        {/* Main Garden Area */}
-        <div className="flex-1 bg-white p-4 rounded-lg shadow-lg">
-          <GardenSizeControls 
-            gardenSize={gardenSize}
-            handleSizeChange={handleSizeChange}
+        {/* Main Content */} 
+        <div className="flex gap-4 max-w-6xl mx-auto">
+          {/* Left Sidebar */}
+          <LeftSidebar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            filteredPlants={filteredPlants}
+            handleNewPlantDragStart={handleNewPlantDragStart}
           />
-          <div onClick={handleCanvasClick}>
-            <GardenCanvas
+          
+          {/* Main Garden Area */}
+          <div className="flex-1 bg-white p-4 rounded-lg shadow-lg">
+            <GardenSizeControls 
               gardenSize={gardenSize}
-              handleDrop={handleDrop}
-              gardenPlants={gardenPlants}
-              handlePlantClick={handlePlantClick}
-              handlePlantDragStart={handlePlantDragStart}
+              handleSizeChange={handleSizeChange}
             />
+            <div onClick={handleCanvasClick}>
+              <GardenCanvas
+                gardenSize={gardenSize}
+                handleDrop={handleDrop}
+                gardenPlants={gardenPlants}
+                handlePlantClick={handlePlantClick}
+                handlePlantDragStart={handlePlantDragStart}
+              />
+            </div>
           </div>
+          
+          {/* Right Sidebar - Plant Details */}
+          <RightSidebar 
+            selectedPlant={selectedPlant}
+            onClose={handleCloseDetails}
+            onDelete={handleDeletePlant}
+          />
         </div>
-        
-        {/* Right Sidebar - Plant Details */}
-        <RightSidebar 
-          selectedPlant={selectedPlant}
-          onClose={handleCloseDetails}
-          onDelete={handleDeletePlant}
-        />
       </div>
-    </div>
   );
 }
-
-
-
