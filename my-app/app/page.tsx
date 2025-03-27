@@ -10,34 +10,119 @@ import cabbage from "./graphics/Cabbage.svg";
 import blueberry from "./graphics/Blueberry.svg";
 import carrot from "./graphics/Carrot.svg";
 import garlic from "./graphics/Garlic.svg";
+import onion from "./graphics/Onion.svg";
+import BellPepper from "./graphics/Bell Pepper.svg"
 
+// Define plant space requirements (in feet)
 const plants = [
   { 
     name: "Carrot", 
     image: carrot,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+    description: "Small root vegetable requiring minimal spacing.",
+    spaceRequired: 0.5, // 6 inches between plants
+    size: { width: 50, height: 50 }
   },
   { 
     name: "Corn", 
     image: corn,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+    description: "Tall crop that needs significant spacing.",
+    spaceRequired: 1.5, // 18 inches between plants
+    size: { width: 50, height: 50 }
   },
   { 
     name: "Cabbage", 
     image: cabbage,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+    description: "Large leafy vegetable needing ample room.",
+    spaceRequired: 1.5, // 18 inches between plants
+    size: { width: 50, height: 50 }
   },
   {
     name: "Blueberry",
     image: blueberry,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    description: "Shrub that requires space to grow.",
+    spaceRequired: 3, // 3 feet between plants
+    size: { width: 70, height: 70 }
   },
   {
     name: "Garlic",
     image: garlic,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  }
+    description: "Small plant with moderate spacing needs.",
+    spaceRequired: 0.75, // 9 inches between plants
+    size: { width: 40, height: 40 }
+  },
+  {
+    name: "Bell Pepper",
+    image: BellPepper,
+    description: "A mildly spicy vegetable that comes in three colors.",
+    spaceRequired: 1.5,
+    size: {width: 70, height: 70}
+  },
+  {
+    name: "Onion",
+    image: onion,
+    description: "When you cut them, they will make you cry.",
+    spaceRequired: 0.5,
+    size: {width: 40, height: 40}
+  },
 ];
+
+const plantCompatibility = {
+  "Carrot": {
+    incompatibleWith: [
+
+    ]
+  },
+  "Corn": {
+    incompatibleWith: [
+      {
+        name: "Cabbage", 
+        message: "Corn and cabbage compete for nutrients and can stunt each other's growth. Corn's tall structure may also shade the cabbage.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Cabbage": {
+    incompatibleWith: [
+      {
+        name: "Corn", 
+        message: "Cabbage struggles when planted near corn due to nutrient competition and potential shading.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Blueberry": {
+    incompatibleWith: [
+    ]
+  },
+  "Garlic": {
+    incompatibleWith: [
+      {
+        name: "Onion", 
+        message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      }
+    ]
+  },
+  "Bell Pepper": {
+    incompatibleWith: [
+      {
+        name: "Cabbage", 
+        message: "Bell Peppers and cabbage compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Onion": {
+    incompatibleWith: [
+      {
+        name: "Garlic", 
+        message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+    ]
+  },
+
+};
 
 // Create a map of plant names to their image objects for easy lookup
 const plantImageMap = {
@@ -45,7 +130,9 @@ const plantImageMap = {
   "Corn": corn,
   "Cabbage": cabbage,
   "Blueberry": blueberry,
-  "Garlic": garlic
+  "Garlic": garlic,
+  "Onion": onion,
+  "Bell Pepper": BellPepper,
 };
 
 export default function SproutGarden() {
@@ -57,6 +144,76 @@ export default function SproutGarden() {
   const [selectedPlant, setSelectedPlant] = useState(null);
   const dragImageRef = useRef(null);
   
+    // Improved collision detection
+    const checkPlantCollision = (newPlant, excludeId = null) => {
+      return gardenPlants.some(existingPlant => {
+        // Skip the plant being moved if an ID is provided
+        if (excludeId && existingPlant.id === excludeId) {
+          return false;
+        }
+  
+        // Calculate the combined space required (in pixels)
+        const combinedSpaceRequired = (newPlant.spaceRequired + existingPlant.spaceRequired) * 40;
+        
+        // Calculate the distance between plant centers
+        const distance = Math.sqrt(
+          Math.pow(
+            (newPlant.x + (newPlant.size?.width || 40) / 2) - 
+            (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
+          ) + 
+          Math.pow(
+            (newPlant.y + (newPlant.size?.height || 40) / 2) - 
+            (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
+          )
+        );
+        
+        // Check if the distance is less than the combined space required
+        return distance < combinedSpaceRequired;
+      });
+  };
+
+  const checkPlantCompatibility = (newPlant, existingPlants) => {
+    const incompatibilityWarnings = [];
+  
+    existingPlants.forEach(existingPlant => {
+      const newPlantCompatibility = plantCompatibility[newPlant.name];
+      
+      if (newPlantCompatibility?.incompatibleWith) {
+        // Find the specific incompatibility for this plant pair
+        const incompatibilityRule = newPlantCompatibility.incompatibleWith.find(
+          rule => rule.name === existingPlant.name
+        );
+  
+        if (incompatibilityRule) {
+          // Calculate the distance between plant centers
+          const distance = Math.sqrt(
+            Math.pow(
+              (newPlant.x + (newPlant.size?.width || 40) / 2) - 
+              (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
+            ) + 
+            Math.pow(
+              (newPlant.y + (newPlant.size?.height || 40) / 2) - 
+              (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
+            )
+          ) / 40; // Convert to feet
+  
+          // Check if plants are closer than the minimum safe distance
+          if (distance <= incompatibilityRule.minDistance) {
+            incompatibilityWarnings.push({
+              plant1: newPlant.name,
+              plant2: existingPlant.name,
+              distance: distance.toFixed(1),
+              warningMessage: incompatibilityRule.message,
+              minDistance: incompatibilityRule.minDistance
+            });
+          }
+        }
+      }
+    });
+  
+    return incompatibilityWarnings;
+  };
+
   // Handle plant drag start from left panel
   const handleNewPlantDragStart = (plant, imgElement) => (e) => {
     setDraggedPlant(plant);
@@ -82,45 +239,120 @@ export default function SproutGarden() {
   const handleDrop = (e) => {
     e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
-    // Adjust position calculation based on typical plant image size (40x40 pixels)
-    const plantSize = 40;
-    const x = e.clientX - rect.left - (plantSize / 2);
-    const y = e.clientY - rect.top - (plantSize / 2);
+    // Adjust position calculation based on plant-specific size
+    const x = e.clientX - rect.left - (draggedPlant?.size?.width || 40) / 2;
+    const y = e.clientY - rect.top - (draggedPlant?.size?.height || 40) / 2;
 
     // Ensure the plant stays within the garden bounds
-    const maxX = gardenSize.width * 40 - plantSize;
-    const maxY = gardenSize.height * 40 - plantSize;
+    const maxX = gardenSize.width * 40 - (draggedPlant?.size?.width || 40);
+    const maxY = gardenSize.height * 40 - (draggedPlant?.size?.height || 40);
 
     const clampedX = Math.max(0, Math.min(x, maxX));
     const clampedY = Math.max(0, Math.min(y, maxY));
 
     if (draggedPlant) {
-      // Add new plant with unique ID
+      // Create new plant object with specific details
       const newPlant = { 
         ...draggedPlant, 
         x: clampedX, 
         y: clampedY,
-        id: Date.now().toString() // Add unique ID for each plant
+        id: Date.now().toString(), // Add unique ID for each plant
       };
-      setGardenPlants([...gardenPlants, newPlant]);
-      setDraggedPlant(null);
-      
-      // Optionally select the newly added plant
-      setSelectedPlant(newPlant);
+
+      // Check for collision before adding
+      if (!checkPlantCollision(newPlant)) {
+        // Then check for plant compatibility
+        const compatibilityWarnings = checkPlantCompatibility(newPlant, gardenPlants);
+  
+        if (compatibilityWarnings.length > 0) {
+          // Create a more detailed warning message
+          const warningText = compatibilityWarnings.map(warning => 
+            `Warning: ${warning.plant1} and ${warning.plant2} are too close (${warning.distance} ft apart). 
+  Recommended minimum distance: ${warning.minDistance} ft.
+  ${warning.warningMessage}`
+          ).join('\n\n');
+  
+          // Optional: You could replace this with a more user-friendly notification system
+          const userConfirmed = window.confirm(warningText + "\n\nDo you want to place the plant anyway?");
+  
+          if (!userConfirmed) {
+            return; // Stop placement if user cancels
+          }
+        }
+  
+        // If no collision and user confirms (or no warnings), add the plant
+        setGardenPlants([...gardenPlants, newPlant]);
+        setDraggedPlant(null);
+        setSelectedPlant(newPlant);
+      } else {
+        alert("Plants are too close! Maintain proper spacing.");
+      }
     } else if (draggedIndex >= 0) {
       // Move existing plant
       const newPlants = [...gardenPlants];
-      newPlants[draggedIndex] = { ...newPlants[draggedIndex], x: clampedX, y: clampedY };
-      setGardenPlants(newPlants);
-      setDraggedIndex(-1);
-      
-      // Update selected plant if it was moved
-      if (selectedPlant && selectedPlant.id === newPlants[draggedIndex].id) {
-        setSelectedPlant(newPlants[draggedIndex]);
+      const movedPlant = {
+        ...newPlants[draggedIndex], 
+        x: clampedX, 
+        y: clampedY
+      };
+    
+      // Check for collision with other plants when moving
+      // Pass the ID of the plant being moved to exclude it from collision check
+      const wouldCollide = checkPlantCollision(
+        movedPlant, 
+        newPlants[draggedIndex].id
+      );
+    
+      // Check for plant compatibility with other plants
+      const compatibilityWarnings = checkPlantCompatibility(
+        movedPlant, 
+        newPlants.filter(plant => plant.id !== newPlants[draggedIndex].id)
+      );
+    
+      if (!wouldCollide && compatibilityWarnings.length === 0) {
+        // No collisions and no compatibility issues
+        newPlants[draggedIndex] = movedPlant;
+        setGardenPlants(newPlants);
+        setDraggedIndex(-1);
+        
+        // Update selected plant if it was moved
+        if (selectedPlant && selectedPlant.id === newPlants[draggedIndex].id) {
+          setSelectedPlant(newPlants[draggedIndex]);
+        }
+      } else {
+        // Prepare warning messages
+        let warningMessage = "";
+        let userConfirmed = true;
+        if (wouldCollide) {
+          alert("Cannot move plant here. Too close to other plants!\n");
+          userConfirmed = false;
+        }
+        
+        else if (compatibilityWarnings.length > 0) {
+          const compatWarningText = compatibilityWarnings.map(warning => 
+            `Warning: ${warning.plant1} and ${warning.plant2} are too close (${warning.distance} ft apart). 
+    Recommended minimum distance: ${warning.minDistance} ft.
+    ${warning.warningMessage}`
+          ).join('\n\n');
+          
+          warningMessage = compatWarningText;
+          userConfirmed = window.confirm(warningMessage + "\n\nDo you want to move the plant anyway?");
+        }
+    
+        if (userConfirmed) {
+          // Force move despite warnings
+          newPlants[draggedIndex] = movedPlant;
+          setGardenPlants(newPlants);
+          setDraggedIndex(-1);
+          
+          // Update selected plant if it was moved
+          if (selectedPlant && selectedPlant.id === newPlants[draggedIndex].id) {
+            setSelectedPlant(newPlants[draggedIndex]);
+          }
+        }
       }
     }
   };
-
   // Handle closing the details panel
   const handleCloseDetails = () => {
     setSelectedPlant(null);
@@ -211,35 +443,72 @@ export default function SproutGarden() {
         // Set the garden size
         setGardenSize(data.gardenSize);
         
-        // Process the plants and restore the image objects
+        // Process the plants and fully restore the plant objects
         const loadedPlants = data.gardenPlants.map(plant => {
-          // Check if the plant name exists in our plant library
-          if (!plantImageMap[plant.name]) {
+          // Find the corresponding plant definition from the original plants array
+          const plantDefinition = plants.find(p => p.name === plant.name);
+          
+          if (!plantDefinition) {
             throw new Error(`Unknown plant type: ${plant.name}`);
           }
           
-          // Restore the image object
+          // Fully restore the plant object with all original properties
           return {
-            ...plant,
-            image: plantImageMap[plant.name],
-            description: plants.find(p => p.name === plant.name)?.description || "No description available"
+            ...plantDefinition,  // Restore original plant definition
+            x: plant.x,           // Restore saved position
+            y: plant.y,           // Restore saved position
+            id: plant.id || Date.now().toString(), // Ensure unique ID
           };
         });
         
+        // Perform collision check on loaded plants
+        const nonCollidingPlants = [];
+        for (const plant of loadedPlants) {
+          // Check if the current plant collides with already placed plants
+          const wouldCollide = nonCollidingPlants.some(existingPlant => {
+            // Calculate the combined space required (in pixels)
+            const combinedSpaceRequired = (plant.spaceRequired + existingPlant.spaceRequired) * 40;
+            
+            // Calculate the distance between plant centers
+            const distance = Math.sqrt(
+              Math.pow(
+                (plant.x + (plant.size?.width || 40) / 2) - 
+                (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
+              ) + 
+              Math.pow(
+                (plant.y + (plant.size?.height || 40) / 2) - 
+                (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
+              )
+            );
+            
+            // Check if the distance is less than the combined space required
+            return distance < combinedSpaceRequired;
+          });
+          
+          // If no collision, add the plant
+          if (!wouldCollide) {
+            nonCollidingPlants.push(plant);
+          } else {
+            // Optional: Log or handle plants that cannot be placed
+            console.warn(`Plant ${plant.name} could not be placed due to spacing constraints`);
+          }
+        }
+        
         // Set the garden plants
-        setGardenPlants(loadedPlants);
+        setGardenPlants(nonCollidingPlants);
         
         // Clear selection
         setSelectedPlant(null);
         
       } catch (error) {
         console.error("Error loading garden:", error);
-        
+        alert(`Error loading garden: ${error.message}`);
       }
     };
     
     reader.onerror = () => {
-      // Show error message
+      console.error("Error reading garden file");
+      alert("Error reading garden file");
     };
     
     // Read the file as text
