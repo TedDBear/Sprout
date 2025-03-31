@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sporut",
+  title: "Sprout",
   description: "Sprout is a gardening website that makes it quick and easy to design your own garden.",
 };
 

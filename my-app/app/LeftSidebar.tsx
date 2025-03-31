@@ -1,5 +1,6 @@
 // In the LeftSidebar.tsx component, add a ref to the image elements
-import React, { useRef } from "react";
+import React, {useState, useRef} from "react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,6 +9,17 @@ export default function LeftSidebar({searchQuery, setSearchQuery, filteredPlants
   // Create refs for the plant images
   const imageRefs = useRef({});
   
+  // Track expanded state per plant
+  const [expandedCards, setExpandedCards] = useState({});
+
+  //handles the toggle of each card to expand
+  const handleToggleExpand = (plantName) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [plantName]: !prev[plantName],
+    }));
+  };
+
   return (
     <div className="w-72 h-150 flex-shrink-0 bg-white p-4 rounded-lg shadow-lg overflow-y-scroll">
       <h2 className="text-lg font-semibold mb-4">Plant List</h2>
@@ -47,6 +59,14 @@ export default function LeftSidebar({searchQuery, setSearchQuery, filteredPlants
                 <p className="text-xs text-gray-500">{plant.description}</p>
               </div>
             </CardContent>
+            <Button variant="outline" onClick={() => handleToggleExpand(plant.name)}>
+              {expandedCards[plant.name] ? 'Collapse' : 'Expand'}
+            </Button>
+            {expandedCards[plant.name] && (
+              <div className="p-2 border-t">
+                <center>{plant.priceInfo}</center>
+              </div>
+            )}
           </Card>
         ))}
       </div>

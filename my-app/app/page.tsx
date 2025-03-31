@@ -15,28 +15,59 @@ const plants = [
   { 
     name: "Carrot", 
     image: carrot,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+    description: "Small root vegetable requiring minimal spacing.",
+    spaceRequired: 0.5, // 6 inches between plants
+    size: { width: 50, height: 50 },
+    priceInfo: "Carrot: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   { 
     name: "Corn", 
     image: corn,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+    description: "Tall crop that needs significant spacing.",
+    spaceRequired: 1.5, // 18 inches between plants
+    size: { width: 50, height: 50 },
+    priceInfo: "Corn: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   { 
     name: "Cabbage", 
     image: cabbage,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." 
+    description: "Large leafy vegetable needing ample room.",
+    spaceRequired: 1.5, // 18 inches between plants
+    size: { width: 50, height: 50 },
+    priceInfo: "Cabbage: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   {
     name: "Blueberry",
     image: blueberry,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    description: "Shrub that requires space to grow.",
+    spaceRequired: 3, // 3 feet between plants
+    size: { width: 70, height: 70 },
+    priceInfo: "Blueberry: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   {
     name: "Garlic",
     image: garlic,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  }
+    description: "Small plant with moderate spacing needs.",
+    spaceRequired: 0.75, // 9 inches between plants
+    size: { width: 40, height: 40 },
+    priceInfo: "Garlic: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  /*{
+    name: "Bell Pepper",
+    image: BellPepper,
+    description: "A mildly spicy vegetable that comes in three colors.",
+    spaceRequired: 1.5,
+    size: {width: 70, height: 70},
+    priceInfo: "Bell Pepper: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Onion",
+    image: onion,
+    description: "When you cut them, they will make you cry.",
+    spaceRequired: 0.5,
+    size: {width: 40, height: 40},
+    priceInfo: "Onion: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },*/
 ];
 
 // Create a map of plant names to their image objects for easy lookup
