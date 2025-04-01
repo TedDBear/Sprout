@@ -373,7 +373,7 @@ export default function SproutGarden() {
 
   // Handle garden size change
   const handleSizeChange = (field, value) => {
-    const newValue = Math.max(5, Number(value) + 1); // Ensure minimum size is 5 feet
+    const newValue = Math.min(21, Math.max(5, Number(value) + 1));
     setGardenSize((prev) => ({ ...prev, [field]: newValue }));
   };
 
@@ -524,14 +524,14 @@ export default function SproutGarden() {
 
   return (
    
-      <div className="p-4 bg-green-50 min-h-screen">
+      <div className="p-4 bg-green-50 min-h-screen min-w-screen">
         <Header  
           clearGarden={clearGarden}
           saveGarden={saveGarden}
           loadGarden={loadGarden}
         />
         {/* Main Content */} 
-        <div className="flex gap-4 max-w-6xl mx-auto">
+        <div className="flex gap-4 max-w-8xl mx-auto">
           {/* Left Sidebar */}
           <LeftSidebar
             searchQuery={searchQuery}
@@ -541,8 +541,8 @@ export default function SproutGarden() {
           />
           
           {/* Main Garden Area */}
-          <div className="flex-1 bg-white p-4 rounded-lg shadow-lg">
-            <GardenSizeControls 
+          <div className="flex-1 bg-white p-4 rounded-lg shadow-lg justify-items-center">
+            <GardenSizeControls  
               gardenSize={gardenSize}
               handleSizeChange={handleSizeChange}
             />
