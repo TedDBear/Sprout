@@ -283,6 +283,7 @@ export default function SproutGarden() {
           const userConfirmed = window.confirm(warningText + "\n\nDo you want to place the plant anyway?");
   
           if (!userConfirmed) {
+            setDraggedPlant(null);
             return; // Stop placement if user cancels
           }
         }
@@ -292,7 +293,8 @@ export default function SproutGarden() {
         setDraggedPlant(null);
         setSelectedPlant(newPlant);
       } else {
-        alert("Plants are too close! Maintain proper spacing.");
+        alert("Cannot put plant here. Too close to other plants!\n");
+        setDraggedPlant(null);
       }
     } else if (draggedIndex >= 0) {
       // Move existing plant
@@ -524,7 +526,7 @@ export default function SproutGarden() {
 
   return (
    
-      <div className="p-4 bg-green-50 min-h-screen min-w-screen">
+      <div className="p-4 min-h-screen min-w-screen" style={{backgroundColor: "#B2D4A7"}}>
         <Header  
           clearGarden={clearGarden}
           saveGarden={saveGarden}
@@ -541,7 +543,7 @@ export default function SproutGarden() {
           />
           
           {/* Main Garden Area */}
-          <div className="flex-1 bg-white p-4 rounded-lg shadow-lg justify-items-center">
+          <div className="flex-1 bg-white p-4 rounded-lg shadow-lg">
             <GardenSizeControls  
               gardenSize={gardenSize}
               handleSizeChange={handleSizeChange}
