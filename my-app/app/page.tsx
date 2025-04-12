@@ -41,7 +41,7 @@ export default function HomePage() {
               {
                 title: "Learn",
                 description: "Discover information about your plants needs.",
-                icon: "📚" // maybe we can make icons to go here, but for now its emojis.
+                icon: "📚" // maybe we can make icons to go here, but for now its emojis. Could also remove these, but the added visuality was nice I thought. 
               },
               {
                 title: "Plan",
