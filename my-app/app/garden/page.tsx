@@ -28,7 +28,7 @@ const plants = [
     description: "Small root vegetable requiring minimal spacing.",
     spaceRequired: 0.5, // 6 inches between plants
     size: { width: 50, height: 50 },
-    priceInfo: "Carrot: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'CARROTS',
   },
   { 
     name: "Corn", 
@@ -36,7 +36,7 @@ const plants = [
     description: "Tall crop that needs significant spacing.",
     spaceRequired: 1.5, // 18 inches between plants
     size: { width: 50, height: 50 },
-    priceInfo: "Corn: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'CORN',
   },
   { 
     name: "Cabbage", 
@@ -44,7 +44,7 @@ const plants = [
     description: "Large leafy vegetable needing ample room.",
     spaceRequired: 1.5, // 18 inches between plants
     size: { width: 50, height: 50 },
-    priceInfo: "Cabbage: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'CABBAGE',
   },
   {
     name: "Potato", 
@@ -52,7 +52,7 @@ const plants = [
     description: "Potatoes are starchy root vegetables that don't require a lot of space.",
     spaceRequired: 1,
     size: { width: 50, height: 50 },
-    priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'POTATOES',
   },
   {
     name: "Blueberry",
@@ -60,7 +60,7 @@ const plants = [
     description: "Shrub that requires space to grow.",
     spaceRequired: 3, // 3 feet between plants
     size: { width: 70, height: 70 },
-    priceInfo: "Blueberry: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'BLUEBERRIES',
   },
   {
     name: "Pumpkin", 
@@ -68,7 +68,7 @@ const plants = [
     description: "a large oval plant similar to squash that requires a lot of space.",
     spaceRequired: 6,
     size: { width: 100, height: 100 },
-    priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'PUMPKINS',
   },
   {
     name: "Bell Pepper",
@@ -76,7 +76,7 @@ const plants = [
     description: "A mildly spicy vegetable that comes in three colors.",
     spaceRequired: 1.5,
     size: {width: 70, height: 70},
-    priceInfo: "Bell Pepper: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'PEPPERS',
   },
   {
     name: "Garlic",
@@ -84,7 +84,7 @@ const plants = [
     description: "Small plant with moderate spacing needs.",
     spaceRequired: 0.75, // 9 inches between plants
     size: { width: 40, height: 40 },
-    priceInfo: "Garlic: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'GARLIC',
   }, 
   {
     name: "Onion",
@@ -92,7 +92,7 @@ const plants = [
     description: "When you cut them, they will make you cry.",
     spaceRequired: 0.5,
     size: {width: 40, height: 40},
-    priceInfo: "Onion: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'ONIONS',
   },
   {
     name: "Broccoli", 
@@ -100,7 +100,7 @@ const plants = [
     description: "Broccoli has large flower heads known as crowns that are green. They require a decent amount of space and thrive in cold weather.",
     spaceRequired: 2,
     size: { width: 50, height: 50 },
-    priceInfo: "Broccoli: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'BROCCOLI',
   },
 ];
 
