@@ -64,7 +64,7 @@ export default function LeftSidebar({searchQuery, setSearchQuery, filteredPlants
             </Button>
             {expandedCards[plant.name] && (
               <div className="p-2 border-t">
-                <center>{plant.priceInfo}</center>
+                <center>Insert info here</center>
               </div>
             )}
           </Card>

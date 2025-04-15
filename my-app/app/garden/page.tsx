@@ -31,7 +31,7 @@ const plants = [
     description: "The carrot is a root vegetable. It is usually orange in color, but some cultivars are purple, black, red, white, and yellow. The most commonly eaten part of the plant is the taproot, but the greens are sometimes eaten as well. The leaves appear first, and the taproot grows more slowly beneath the soil.",
     spaceRequired: 0.5, // 6 inches between plants
     size: { width: 50, height: 50 },
-    priceInfo: "Carrot: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'CARROTS',
   },
   { 
     name: "Corn", 
@@ -39,7 +39,7 @@ const plants = [
     description: "Corn is a large grain plant, or tall grass. Depending on the variety, the corn can be eaten fresh, or dried and ground into cornmeal.",
     spaceRequired: 1.5, // 18 inches between plants
     size: { width: 50, height: 50 },
-    priceInfo: "Corn: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'CORN',
   },
   { 
     name: "Cabbage", 
@@ -47,7 +47,7 @@ const plants = [
     description: "Cabbage is a member of the Brassica family. It's dense, layered heads grow on stalks and are surrounded by looser outer leaves. It's leaves can be green, white, or purple in color, and smooth or crinkly in texture. Depending on the variety, the head can be round, oblong, or flat.",
     spaceRequired: 1.5, // 18 inches between plants
     size: { width: 50, height: 50 },
-    priceInfo: "Cabbage: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'CABBAGE',
   },
   {
     name: "Potato", 
@@ -55,7 +55,7 @@ const plants = [
     description: "Potatoes are starchy root vegetables in the Solanaceae, or Nightshade, family. The leaves and fruit are usually poisonous and the stem tuber is the only edible part once it is cooked. The potato can be cooked in many ways, brewed into alcohol, and also used as the basis for creating bioplastics.",
     spaceRequired: 1,
     size: { width: 50, height: 50 },
-    priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'POTATOES',
   },
   {
     name: "Blueberry",
@@ -63,13 +63,15 @@ const plants = [
     description: "Blueberries are perennial flowering plants with sweet, indigo-colored berries. Blueberry plants are usually erect, prostrate shrubs that range in height from 10cm to 4m high, depending on the cultivar.",
     spaceRequired: 3, // 3 feet between plants
     size: { width: 70, height: 70 },
-    priceInfo: "Blueberry: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'BLUEBERRIES',
   },
   {
     name: "Pumpkin", 
     image: Pumpkin,
     description: "Pumpkins are a squash cultivars that are round to oval in shape with thick, slightly ribbed skin that varies from deep yellow to orange in color. Their flesh ranges from yellow to gold and has large seeds. Like other members of the Cucurbitaceae family, they grow on sprawling vines. Different varieties of pumpkins are grown for food or decoration.",
     spaceRequired: 6,
+    size: { width: 100, height: 100 },
+    apiTag: 'PUMPKINS',
     size: { width: 50, height: 50 },
     priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
@@ -78,6 +80,8 @@ const plants = [
     image: BellPepper,
     description: "Bell peppers are a cultivar group of the species Capsicum annuum. Bell pepper cultivars produce fruits in colors including red, yellow, orange, green, brown, white, and purple. The fruit is often mildly sweet, because this specific cultivar does not produce capsaicin, the chemical responsible for other peppers' spiciness.",
     spaceRequired: 1.5,
+    size: {width: 70, height: 70},
+    apiTag: 'PEPPERS',
     size: {width: 50, height: 50},
     priceInfo: "Bell Pepper: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
@@ -103,7 +107,7 @@ const plants = [
     description: "The garlic plant has a bulbous root separated into cloves and a tall stalk with branching leaves. The plant has two main subspecies: hard and soft neck. The choice between which subspecies to grow depends on latitude and at what point in the growing season you will be planting the crop. Hard-neck garlic is usually grown in cooler climates and creates larger cloves. Soft-neck garlic is grown in warmer climates and produces smaller, tightly-packed cloves. Be sure to trim garlic scapes before they flower - this will focus the plant's energy into bulb growth, resulting in larger cloves and bulbs. Scapes have a fresh, light garlic flavor. They are delicious raw or cooked, and make a great pesto.",
     spaceRequired: 0.75, // 9 inches between plants
     size: { width: 40, height: 40 },
-    priceInfo: "Garlic: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'GARLIC',
   }, 
   {
     name: "Onion",
@@ -111,7 +115,7 @@ const plants = [
     description: "Onions are bulbous vegetables used in a wide range of culinary dishes, prized for their pungency when raw and sweetness when cooked. They come in different colors, including white, yellow, and red.",
     spaceRequired: 0.5,
     size: {width: 40, height: 40},
-    priceInfo: "Onion: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    apiTag: 'ONIONS',
   },
   {
     name: "Strawberry", 
@@ -151,6 +155,7 @@ const plants = [
     description: "Roses are flowering woody perennials in the Rosa genus and Rosaceae family. There are over 100 species, which can take the shape of shrubs or climbing plants with sickle-shaped prickles or thorns. Their flowers, which are also known as roses, are large, showy, and fragrant.",
     spaceRequired: 2,
     size: { width: 50, height: 50 },
+    apiTag: 'BROCCOLI',
     priceInfo: "Rose: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   {
