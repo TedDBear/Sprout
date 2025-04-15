@@ -56,7 +56,7 @@ export default function LeftSidebar({searchQuery, setSearchQuery, filteredPlants
               />
               <div>
                 <h3 className="font-semibold text-green-800">{plant.name}</h3>
-                <p className="text-xs text-gray-500">{plant.description}</p>
+                <p className="text-xs text-gray-500">{plant.description.substring(0, 47) + '...'}</p>
               </div>
             </CardContent>
             <Button variant="outline" onClick={() => handleToggleExpand(plant.name)}>

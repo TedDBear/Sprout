@@ -37,7 +37,7 @@ export default function RightSidebar({
               alt={selectedPlant.name} 
               className="w-32 h-32 object-contain mb-4"
             />
-            <p className="text-sm text-gray-600 mb-4">{selectedPlant.description}</p>
+            
             
             <div className="w-full bg-green-50 p-3 rounded-md mb-4">
               <h3 className="font-medium mb-2">Position</h3>
@@ -56,6 +56,9 @@ export default function RightSidebar({
             >
               Remove Plant
             </Button>
+            <p className="opacity-0">_</p>
+            <p>Description:</p>
+            <p className="text-sm text-gray-600 mb-4">{selectedPlant.description}</p>
           </div>
         </CardContent>
       </Card>

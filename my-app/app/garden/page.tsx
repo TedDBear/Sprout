@@ -19,13 +19,16 @@ import GreenBean from "./graphics/Green bean.svg"
 import Potato from "./graphics/Potato.svg"
 import Pumpkin from "./graphics/Pumpkin.svg"
 import Rosemary from "./graphics/Rosemary.svg"
+import Sage from "./graphics/Sage.svg"
+import Strawberry from "./graphics/Strawberry.svg"
+import Lily from "./graphics/Lily.svg"
 
 // Define plant space requirements (in feet)
 const plants = [
   { 
     name: "Carrot", 
     image: carrot,
-    description: "Small root vegetable requiring minimal spacing.",
+    description: "The carrot is a root vegetable. It is usually orange in color, but some cultivars are purple, black, red, white, and yellow. The most commonly eaten part of the plant is the taproot, but the greens are sometimes eaten as well. The leaves appear first, and the taproot grows more slowly beneath the soil.",
     spaceRequired: 0.5, // 6 inches between plants
     size: { width: 50, height: 50 },
     priceInfo: "Carrot: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -33,7 +36,7 @@ const plants = [
   { 
     name: "Corn", 
     image: corn,
-    description: "Tall crop that needs significant spacing.",
+    description: "Corn is a large grain plant, or tall grass. Depending on the variety, the corn can be eaten fresh, or dried and ground into cornmeal.",
     spaceRequired: 1.5, // 18 inches between plants
     size: { width: 50, height: 50 },
     priceInfo: "Corn: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -41,7 +44,7 @@ const plants = [
   { 
     name: "Cabbage", 
     image: cabbage,
-    description: "Large leafy vegetable needing ample room.",
+    description: "Cabbage is a member of the Brassica family. It's dense, layered heads grow on stalks and are surrounded by looser outer leaves. It's leaves can be green, white, or purple in color, and smooth or crinkly in texture. Depending on the variety, the head can be round, oblong, or flat.",
     spaceRequired: 1.5, // 18 inches between plants
     size: { width: 50, height: 50 },
     priceInfo: "Cabbage: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -49,7 +52,7 @@ const plants = [
   {
     name: "Potato", 
     image: Potato,
-    description: "Potatoes are starchy root vegetables that don't require a lot of space.",
+    description: "Potatoes are starchy root vegetables in the Solanaceae, or Nightshade, family. The leaves and fruit are usually poisonous and the stem tuber is the only edible part once it is cooked. The potato can be cooked in many ways, brewed into alcohol, and also used as the basis for creating bioplastics.",
     spaceRequired: 1,
     size: { width: 50, height: 50 },
     priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -57,7 +60,7 @@ const plants = [
   {
     name: "Blueberry",
     image: blueberry,
-    description: "Shrub that requires space to grow.",
+    description: "Blueberries are perennial flowering plants with sweet, indigo-colored berries. Blueberry plants are usually erect, prostrate shrubs that range in height from 10cm to 4m high, depending on the cultivar.",
     spaceRequired: 3, // 3 feet between plants
     size: { width: 70, height: 70 },
     priceInfo: "Blueberry: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -65,23 +68,39 @@ const plants = [
   {
     name: "Pumpkin", 
     image: Pumpkin,
-    description: "a large oval plant similar to squash that requires a lot of space.",
+    description: "Pumpkins are a squash cultivars that are round to oval in shape with thick, slightly ribbed skin that varies from deep yellow to orange in color. Their flesh ranges from yellow to gold and has large seeds. Like other members of the Cucurbitaceae family, they grow on sprawling vines. Different varieties of pumpkins are grown for food or decoration.",
     spaceRequired: 6,
-    size: { width: 100, height: 100 },
+    size: { width: 50, height: 50 },
     priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   {
     name: "Bell Pepper",
     image: BellPepper,
-    description: "A mildly spicy vegetable that comes in three colors.",
+    description: "Bell peppers are a cultivar group of the species Capsicum annuum. Bell pepper cultivars produce fruits in colors including red, yellow, orange, green, brown, white, and purple. The fruit is often mildly sweet, because this specific cultivar does not produce capsaicin, the chemical responsible for other peppers' spiciness.",
     spaceRequired: 1.5,
-    size: {width: 70, height: 70},
+    size: {width: 50, height: 50},
     priceInfo: "Bell Pepper: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Broccoli", 
+    image: Broccoli,
+    description: "Broccoli has large flower heads known as \"crowns\" that are green to blue-green in color, grouped tightly together atop a thick stem, and surrounded by leaves.",
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    priceInfo: "Broccoli: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Green Bean", 
+    image: GreenBean,
+    description: "Green beans are the unripe, young fruit and protective pods of various cultivars of the common bean.",
+    spaceRequired: 1.3,
+    size: { width: 50, height: 50 },
+    priceInfo: "Green Bean: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   {
     name: "Garlic",
     image: garlic,
-    description: "Small plant with moderate spacing needs.",
+    description: "The garlic plant has a bulbous root separated into cloves and a tall stalk with branching leaves. The plant has two main subspecies: hard and soft neck. The choice between which subspecies to grow depends on latitude and at what point in the growing season you will be planting the crop. Hard-neck garlic is usually grown in cooler climates and creates larger cloves. Soft-neck garlic is grown in warmer climates and produces smaller, tightly-packed cloves. Be sure to trim garlic scapes before they flower - this will focus the plant's energy into bulb growth, resulting in larger cloves and bulbs. Scapes have a fresh, light garlic flavor. They are delicious raw or cooked, and make a great pesto.",
     spaceRequired: 0.75, // 9 inches between plants
     size: { width: 40, height: 40 },
     priceInfo: "Garlic: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -89,18 +108,58 @@ const plants = [
   {
     name: "Onion",
     image: onion,
-    description: "When you cut them, they will make you cry.",
+    description: "Onions are bulbous vegetables used in a wide range of culinary dishes, prized for their pungency when raw and sweetness when cooked. They come in different colors, including white, yellow, and red.",
     spaceRequired: 0.5,
     size: {width: 40, height: 40},
     priceInfo: "Onion: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
   {
-    name: "Broccoli", 
-    image: Broccoli,
-    description: "Broccoli has large flower heads known as crowns that are green. They require a decent amount of space and thrive in cold weather.",
+    name: "Strawberry", 
+    image: Strawberry,
+    description: "Strawberries are a hybrid species of the genus Fragaria that produce sweet, bright red fruits.",
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    priceInfo: "Strawberry: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Sage", 
+    image: Sage,
+    description: "Sage is an evergreen shrub with woody stems, soft green-gray leaves, and blue to purplish flowers. It is in the Mint family, it can be used fresh or dried, and it has culinary and medicinal uses.",
+    spaceRequired: 1.5,
+    size: { width: 50, height: 50 },
+    priceInfo: "Sage: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Basil", 
+    image: Basil,
+    description: "Basil is a fragrant and delicious herb with tender green leaves. Great in just about anything - salad, sauces, meat marinades, pizza, and even popcorn.",
+    spaceRequired: 1.3,
+    size: { width: 50, height: 50 },
+    priceInfo: "Basil: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Rosemary", 
+    image: Rosemary,
+    description: "Rosemary is a woody, perennial herb with fragrant, evergreen, needle-like leaves and white, pink, purple, or blue flowers, native to the Mediterranean region. It is a member of the mint family Lamiaceae and has a fibrous root system.",
     spaceRequired: 2,
     size: { width: 50, height: 50 },
-    priceInfo: "Broccoli: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    priceInfo: "Rosemary: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Rose", 
+    image: Rose,
+    description: "Roses are flowering woody perennials in the Rosa genus and Rosaceae family. There are over 100 species, which can take the shape of shrubs or climbing plants with sickle-shaped prickles or thorns. Their flowers, which are also known as roses, are large, showy, and fragrant.",
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    priceInfo: "Rose: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    name: "Lily", 
+    image: Lily,
+    description: "",
+    spaceRequired: 1.5,
+    size: { width: 50, height: 50 },
+    priceInfo: "Rose: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
   },
 ];
 
@@ -117,24 +176,44 @@ const plantCompatibility = {
         message: "Corn and cabbage compete for nutrients and can stunt each other's growth. Corn's tall structure may also shade the cabbage.",
         minDistance: 10
       },
+      {
+        name: "Broccoli",
+        message: "Corn and Broccoli compete for nutrients, and corn may can block the broccoli from getting enough sunlight.",      
+        minDistance: 10
+      },
     ]
   },
   "Cabbage": {
     incompatibleWith: [
-      {
-        name: "Corn", 
-        message: "Cabbage struggles when planted near corn due to nutrient competition and potential shading.",
-        minDistance: 10
-      },
-      {
-        name: "Bell Pepper", 
-        message: "Bell Peppers and cabbage compete for nutrients and can stunt each other's growth.",
-        minDistance: 10
-      },
+        {
+          name: "Strawberry",
+          message: "Strawberries can attract pests that are harmful to cabbage.",
+          minDistance: 10
+        },
+        {
+          name: "Corn", 
+          message: "Cabbage struggles when planted near corn due to nutrient competition and potential shading.",
+          minDistance: 10
+        },
+        {
+          name: "Bell Pepper", 
+          message: "Bell Peppers and cabbage compete for nutrients and can stunt each other's growth.",
+          minDistance: 10
+        },
     ]
   },
   "Blueberry": {
     incompatibleWith: [
+    {
+      name: "Sage",
+      message: "Sage is a part of the mint family, which spread quickly and may overtake the blueberries",
+      minDistance: 10
+    },
+    {
+      name: "Rosemary",
+      message: "Rosemary is a part of the mint family, which spread quickly and may overtake the blueberries",
+      minDistance: 10
+    },
     ]
   },
   "Garlic": {
@@ -143,7 +222,12 @@ const plantCompatibility = {
         name: "Onion", 
         message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
         minDistance: 10
-      }
+      },
+      {
+        name: "Green Beans", 
+        message: "The strong scent of Garlic can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
     ]
   },
   "Bell Pepper": {
@@ -151,6 +235,21 @@ const plantCompatibility = {
       {
         name: "Cabbage", 
         message: "Bell Peppers and cabbage compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Broccoli", 
+        message: "Bell Peppers and Broccoli compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Strawberry", 
+        message: "Bell peppers have been known to transmit a fungal disease to strawberries.",
+        minDistance: 10
+      },
+      {
+        name: "Broccoli", 
+        message: "Bell Peppers and Broccoli compete for nutrients and can stunt each other's growth.",
         minDistance: 10
       },
     ]
@@ -162,9 +261,159 @@ const plantCompatibility = {
         message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
         minDistance: 10
       },
+      {
+        name: "Pumpkin", 
+        message: "Pumpkins require a lot of water and space, which affect the onions significantly.",
+        minDistance: 10
+      },
+      {
+        name: "Potato", 
+        message: "Onions greatly affect the taste of potatoes.",
+        minDistance: 10
+      },
+      {
+        name: "Onion", 
+        message: "The strong scent of onions can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
     ]
   },
-
+  "Sage": {
+    incompatibleWith: [
+      {
+        name: "Blueberry", 
+        message: "Blueberries do not grow well with mint-like plants such as sage, as they tend to overtake the blueberries.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Rosemary": {
+    incompatibleWith: [
+      {
+        name: "Blueberry", 
+        message: "Blueberries do not grow well with mint-like plants such as rosemary, as they tend to overtake the blueberries.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Potato": {
+    incompatibleWith: [
+      {
+        name: "Pumpkin", 
+        message: "Pumpkins require a lot of water and space, which affect the potato plant significantly.",
+        minDistance: 10
+      },
+      {
+        name: "Onion", 
+        message: "Onions greatly affect the taste of potatoes.",
+        minDistance: 10
+      },
+      {
+        name: "Cabbage", 
+        message: "Cabbage and potatoes would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Broccoli", 
+        message: "Broccoli and potatoes would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Corn", 
+        message: "Corn and potatoes would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Green Bean", 
+        message: "Potatoes and green beans would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Strawberry", 
+        message: "Potatoes and strawberries would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Pumpkin": {
+    incompatibleWith: [
+      {
+        name: "Potato", 
+        message: "Pumpkins tend to not be friendly with plants with long roots such as potatoes.",
+        minDistance: 10
+      },
+      {
+        name: "Onion", 
+        message: "Pumpkins tend to not be friendly with plants with long roots such as onions.",
+        minDistance: 10
+      },
+      {
+        name: "Broccoli", 
+        message: "Broccoli and pumpkins would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Cabbage", 
+        message: "Cabbage and pumpkins would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Green Bean": {
+    incompatibleWith: [
+      {
+        name: "Garlic", 
+        message: "The strong scent of Garlic can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
+      {
+        name: "Onion", 
+        message: "The strong scent of onions can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
+      {
+        name: "Broccoli", 
+        message: "Broccoli and green beans would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Cabbage", 
+        message: "Cabbage and green beans would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Potato", 
+        message: "Potatos and green beans would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Strawberry": {
+    incompatibleWith: [
+      {
+        name: "Broccoli", 
+        message: "Broccoli and strawberries would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+      {
+        name: "Cabbage",
+        message: "Strawberries can attract pests that are harmful to cabbage.",
+        minDistance: 10
+      },
+      {
+        name: "Bell Peppers", 
+        message: "Bell peppers have been known to transmit a fungal disease to strawberries.",
+        minDistance: 10
+      },
+      {
+        name: "Potato", 
+        message: "Potatoes and strawberries would compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      },
+    ]
+  },
+  
+  
 };
 
 // Create a map of plant names to their image objects for easy lookup
@@ -182,7 +431,10 @@ const plantImageMap = {
   "Green Bean": GreenBean,
   "Potato": Potato,
   "Pumpkin": Pumpkin,
-  "Rosemary": Rosemary
+  "Rosemary": Rosemary,
+  "Sage": Sage,
+  "Strawberry": Strawberry,
+  "Lily": Lily,
 };
 
 export default function SproutGarden() {
