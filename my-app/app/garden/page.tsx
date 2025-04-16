@@ -19,92 +19,237 @@ import GreenBean from "./graphics/Green bean.svg"
 import Potato from "./graphics/Potato.svg"
 import Pumpkin from "./graphics/Pumpkin.svg"
 import Rosemary from "./graphics/Rosemary.svg"
+import Sage from "./graphics/Sage.svg"
+import Strawberry from "./graphics/Strawberry.svg"
+import Lily from "./graphics/Lily.svg"
+import Tomato from "./graphics/Tomato.svg"
+import Watermelon from "./graphics/Watermelon.svg"
+import Tulip from "./graphics/Tulip.svg"
 
 // Define plant space requirements (in feet)
 const plants = [
-  { 
-    name: "Carrot", 
-    image: carrot,
-    description: "Small root vegetable requiring minimal spacing.",
-    spaceRequired: 0.5, // 6 inches between plants
-    size: { width: 50, height: 50 },
-    priceInfo: "Carrot: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  },
-  { 
-    name: "Corn", 
-    image: corn,
-    description: "Tall crop that needs significant spacing.",
-    spaceRequired: 1.5, // 18 inches between plants
-    size: { width: 50, height: 50 },
-    priceInfo: "Corn: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  },
-  { 
-    name: "Cabbage", 
-    image: cabbage,
-    description: "Large leafy vegetable needing ample room.",
-    spaceRequired: 1.5, // 18 inches between plants
-    size: { width: 50, height: 50 },
-    priceInfo: "Cabbage: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    {
+        "name": "Tomato",
+        "image": Tomato,
+        "description": "Fruiting plant, grown as an annual. Comes in vining or bush types. Diverse fruit sizes/colors.",
+        "spaceRequired": 2,
+        "size": {"width": 50, "height": 50},
+        "apiTag": "Tomato",
+        "waterAmount": "Medium",
+        "lightLevel": "Full sun"
+    },
+    {
+      "name": "Carrot",
+      "image": carrot,
+      "description": "A root vegetable. It is usually orange in color, but some cultivars are purple, black, red, white, and yellow.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Carrot",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Corn",
+      "image": corn,
+      "description": "A leafy stalk that produces ears after pollination.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Corn",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Potato",
+      "image": Potato,
+      "description": "A starchy root vegetable.",
+      "spaceRequired": 2,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Potato",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Cabbage",
+      "image": cabbage,
+      "description": "Dense, layered heads grow on stalks and are surrounded by looser outer leaves. Its leaves can be green, white, or purple in color, and smooth or crinkly in texture. Depending on the variety, the head can be round, oblong, or flat.",
+      "spaceRequired": 2,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Cabbage",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Bell Pepper",
+      "image": BellPepper,
+      "description": "Sweet pepper variety (no heat) with blocky, thick-walled fruit. Matures from green to various colors. Bushy plant, grown as an annual.",
+      "spaceRequired": 1.5,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Bell Pepper",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Broccoli",
+      "image": Broccoli,
+      "description": "Large flower heads known as 'crowns' that are green to blue-green in color, grouped tightly together atop a thick stem, and surrounded by leaves.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Broccoli",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Green bean",
+      "image": GreenBean,
+      "description": "An upright bush bean with medium-thick green pods.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Green bean",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Garlic",
+      "image": garlic,
+      "description": "A bulbous root separated into cloves and a tall stalk with branching leaves.",
+      "spaceRequired": 0.5,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Garlic",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
   },
   {
-    name: "Potato", 
-    image: Potato,
-    description: "Potatoes are starchy root vegetables that don't require a lot of space.",
-    spaceRequired: 1,
-    size: { width: 50, height: 50 },
-    priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      "name": "Onion",
+      "image": onion,
+      "description": "A bulbous vegetable. It comes in different colors, including white, yellow, and red.",
+      "spaceRequired": 0.5,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Onion",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
   },
   {
-    name: "Blueberry",
-    image: blueberry,
-    description: "Shrub that requires space to grow.",
-    spaceRequired: 3, // 3 feet between plants
-    size: { width: 70, height: 70 },
-    priceInfo: "Blueberry: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      "name": "Pumpkin",
+      "image": Pumpkin,
+      "description": "Squash cultivars that are round to oval in shape with thick, slightly ribbed skin that varies from deep yellow to orange in color. Their flesh ranges from yellow to gold and has large seeds.",
+      "spaceRequired": 2,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Pumpkin",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Blueberry",
+      "image": blueberry,
+      "description": "Deciduous fruiting shrub (perennial). Produces small blue-purple berries. Often has attractive fall foliage.",
+      "spaceRequired": 3,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Blueberry",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Watermelon",
+      "image": Watermelon,
+      "description": "A species of melon that produces round or oblong fruits with thick skin and sweet, watery flesh.",
+      "spaceRequired": 2,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Watermelon",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Strawberry",
+      "image": Strawberry,
+      "description": "A sweet, bright red fruit.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Strawberry",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun - Partial shade"
+    },
+    {
+      "name": "Basil",
+      "image": Basil,
+      "description": "Aromatic culinary herb, typically grown as an annual. Prized for flavorful leaves. Upright, bushy growth.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Basil",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
   },
   {
-    name: "Pumpkin", 
-    image: Pumpkin,
-    description: "a large oval plant similar to squash that requires a lot of space.",
-    spaceRequired: 6,
-    size: { width: 100, height: 100 },
-    priceInfo: "Potato: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  },
-  {
-    name: "Bell Pepper",
-    image: BellPepper,
-    description: "A mildly spicy vegetable that comes in three colors.",
-    spaceRequired: 1.5,
-    size: {width: 70, height: 70},
-    priceInfo: "Bell Pepper: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  },
-  {
-    name: "Garlic",
-    image: garlic,
-    description: "Small plant with moderate spacing needs.",
-    spaceRequired: 0.75, // 9 inches between plants
-    size: { width: 40, height: 40 },
-    priceInfo: "Garlic: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  }, 
-  {
-    name: "Onion",
-    image: onion,
-    description: "When you cut them, they will make you cry.",
-    spaceRequired: 0.5,
-    size: {width: 40, height: 40},
-    priceInfo: "Onion: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  },
-  {
-    name: "Broccoli", 
-    image: Broccoli,
-    description: "Broccoli has large flower heads known as crowns that are green. They require a decent amount of space and thrive in cold weather.",
-    spaceRequired: 2,
-    size: { width: 50, height: 50 },
-    priceInfo: "Broccoli: Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-  },
-];
+      "name": "Rosemary",
+      "image": Rosemary,
+      "description": "A woody, perennial herb with fragrant, evergreen, needle-like leaves and white, pink, purple, or blue flowers, native to the Mediterranean region.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Rosemary",
+      "waterAmount": "Low",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Sage",
+      "image": Sage,
+      "description": "An evergreen shrub with woody stems, soft green-gray leaves, and blue to purplish flowers.",
+      "spaceRequired": 1,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Sage",
+      "waterAmount": "Low",
+      "lightLevel": "Full sun - Partial shade"
+    },
+    {
+      "name": "Lily",
+      "image": Lily,
+      "description": "A large, fragrant, trumpet-shaped white flower with yellow throats and maroon spots. The plant has long, narrow leaves that grow in a whorled pattern.",
+      "spaceRequired": 1.5,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Lily",
+      "waterAmount": "Low",
+      "lightLevel": "Full shade"
+    },
+    {
+      "name": "Rose",
+      "image": Rose,
+      "description": "Large, fragrant, deep red blooms.",
+      "spaceRequired": 2,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Rose",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun"
+    },
+    {
+      "name": "Tulip",
+      "image": Tulip,
+      "description": "A large, cup-shaped flower that is usually red, orange or yellow in color.",
+      "spaceRequired": 1.5,
+      "size": {"width": 50, "height": 50},
+      "apiTag": "Tulip",
+      "waterAmount": "Medium",
+      "lightLevel": "Full sun",
+    },
+  ];
 
 const plantCompatibility = {
+  "Tomato": {
+    incompatibleWith: [
+      {
+        name: "Potato",
+        message: "Tomatoes and potatoes are both susceptible to blight, which can spread between them.",
+        minDistance: 10
+      },
+      {
+        name: "Corn",
+        message: "Corn can attract pests that also target tomatoes, leading to increased pest pressure.",
+        minDistance: 10
+      },
+      {
+        name: "Cabbage",
+        message: "Cabbage and tomatoes can compete for nutrients and can stunt each other's growth.",
+        minDistance: 10
+      }
+    ]    
+  },
   "Carrot": {
     incompatibleWith: [
 
@@ -117,24 +262,49 @@ const plantCompatibility = {
         message: "Corn and cabbage compete for nutrients and can stunt each other's growth. Corn's tall structure may also shade the cabbage.",
         minDistance: 10
       },
+      {
+        name: "Broccoli",
+        message: "Corn and Broccoli compete for nutrients, and corn may can block the broccoli from getting enough sunlight.",      
+        minDistance: 10
+      },
+      {
+        name: "Tomato",
+        message: "Corn can attract pests that also target tomatoes, leading to increased pest pressure.",
+        minDistance: 10
+      },
     ]
   },
   "Cabbage": {
     incompatibleWith: [
-      {
-        name: "Corn", 
-        message: "Cabbage struggles when planted near corn due to nutrient competition and potential shading.",
-        minDistance: 10
-      },
-      {
-        name: "Bell Pepper", 
-        message: "Bell Peppers and cabbage compete for nutrients and can stunt each other's growth.",
-        minDistance: 10
-      },
+        {
+          name: "Strawberry",
+          message: "Strawberries can attract pests that are harmful to cabbage.",
+          minDistance: 10
+        },
+        {
+          name: "Corn", 
+          message: "Cabbage struggles when planted near corn due to nutrient competition and potential shading.",
+          minDistance: 10
+        },
+        {
+          name: "Tomato",
+          message: "Cabbage and tomatoes can compete for nutrients and scan stunt each other's growth.",
+          minDistance: 10
+        }
     ]
   },
   "Blueberry": {
     incompatibleWith: [
+    {
+      name: "Sage",
+      message: "Sage is a part of the mint family, which spread quickly and may overtake the blueberries",
+      minDistance: 10
+    },
+    {
+      name: "Rosemary",
+      message: "Rosemary is a part of the mint family, which spread quickly and may overtake the blueberries",
+      minDistance: 10
+    },
     ]
   },
   "Garlic": {
@@ -143,14 +313,19 @@ const plantCompatibility = {
         name: "Onion", 
         message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
         minDistance: 10
-      }
+      },
+      {
+        name: "Green Beans", 
+        message: "The strong scent of Garlic can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
     ]
   },
   "Bell Pepper": {
     incompatibleWith: [
       {
-        name: "Cabbage", 
-        message: "Bell Peppers and cabbage compete for nutrients and can stunt each other's growth.",
+        name: "Strawberry", 
+        message: "Bell peppers have been known to transmit a fungal disease to strawberries.",
         minDistance: 10
       },
     ]
@@ -162,9 +337,74 @@ const plantCompatibility = {
         message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
         minDistance: 10
       },
+      {
+        name: "Pumpkin", 
+        message: "Pumpkins require a lot of water and space, which affect the onions significantly.",
+        minDistance: 10
+      },
+      {
+        name: "Potato", 
+        message: "Onions greatly affect the taste of potatoes.",
+        minDistance: 10
+      },
     ]
   },
-
+  "Sage": {
+    incompatibleWith: [
+      {
+        name: "Blueberry", 
+        message: "Blueberries do not grow well with mint-like plants such as sage, as they tend to overtake the blueberries.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Rosemary": {
+    incompatibleWith: [
+      {
+        name: "Blueberry", 
+        message: "Blueberries do not grow well with mint-like plants such as rosemary, as they tend to overtake the blueberries.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Green Bean": {
+    incompatibleWith: [
+      {
+        name: "Garlic", 
+        message: "The strong scent of Garlic can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
+      {
+        name: "Onion", 
+        message: "The strong scent of onions can stunt the growth of green beans and reduce their yield.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Strawberry": {
+    incompatibleWith: [
+      {
+        name: "Cabbage",
+        message: "Strawberries can attract pests that are harmful to cabbage.",
+        minDistance: 10
+      },
+      {
+        name: "Bell Peppers", 
+        message: "Bell peppers have been known to transmit a fungal disease to strawberries.",
+        minDistance: 10
+      },
+    ]
+  },
+  "Potato": {
+    incompatibleWith: [
+      {
+        name: "Potato",
+        message: "Tomatoes and potatoes are both susceptible to blight, which can spread between them.",
+        minDistance: 10
+      }
+    ]
+  }
+  
 };
 
 // Create a map of plant names to their image objects for easy lookup
@@ -182,7 +422,13 @@ const plantImageMap = {
   "Green Bean": GreenBean,
   "Potato": Potato,
   "Pumpkin": Pumpkin,
-  "Rosemary": Rosemary
+  "Rosemary": Rosemary,
+  "Sage": Sage,
+  "Strawberry": Strawberry,
+  "Lily": Lily,
+  "Tulip": Tulip,
+  "Watermelon": Watermelon,
+  "Tomato": Tomato
 };
 
 export default function SproutGarden() {
@@ -195,7 +441,7 @@ export default function SproutGarden() {
   const dragImageRef = useRef(null);
   
     // Improved collision detection
-    const checkPlantCollision = (newPlant, excludeId = null) => {
+const checkPlantCollision = (newPlant, excludeId = null) => {
       return gardenPlants.some(existingPlant => {
         // Skip the plant being moved if an ID is provided
         if (excludeId && existingPlant.id === excludeId) {
