@@ -2,14 +2,14 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {mockUSDAData} from "@/app/api/fetchUSDA/mockUSDAData";
+import {USDAData} from "@/app/api/fetchUSDA/USDAData";
 import {useState} from 'react';
 
 export default function HomePage() {
 
   const [selectedPlant, setSelectedPlant] = useState<string | null>(null);
 
-  const plantData = selectedPlant ? mockUSDAData[selectedPlant.toUpperCase()] : null;
+  const plantData = selectedPlant ? USDAData[selectedPlant.toUpperCase()] : null;
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -93,7 +93,7 @@ export default function HomePage() {
             defaultValue=""
           >
             <option value="" disabled>Select a plant</option>
-            {Object.keys(mockUSDAData).map((plantKey) => (
+            {Object.keys(USDAData).map((plantKey) => (
               <option key={plantKey} value={plantKey}>{plantKey}</option>
             ))}
           </select>
@@ -101,8 +101,8 @@ export default function HomePage() {
 
         {plantData && (
           <div className="text-center text-lg">
-            <p>Price Purchased Wholesale: ${plantData.PRICE_WHOLESALE.toFixed(2)}</p>
-            <p>Price Grown: ${plantData.PRICE_GROWN.toFixed(2)}</p>
+            <p>Price Purchased Wholesale: ${plantData.PRICE_WHOLESALE.toFixed(2)}/{plantData.AMOUNT_TYPE}</p>
+            <p>Price Grown: ${plantData.PRICE_GROWN.toFixed(2)}/{plantData.AMOUNT_TYPE}</p>
             <p>Amount saved: ${(plantData.PRICE_WHOLESALE - plantData.PRICE_GROWN).toFixed(2)}</p>
           </div>
         )}
