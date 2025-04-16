@@ -1,5 +1,7 @@
 import React from 'react';
 
+//The closest thing I could find for brown in tailwind is bg-orange-500/75
+
 export default function GardenCanvas({
   gardenSize, 
   handleDrop, 
@@ -9,7 +11,7 @@ export default function GardenCanvas({
 }) {
   return (
     <div
-      className="border-2 border-green-200 relative rounded-lg bg-green-50"
+      className="border-2 border-green-200 relative rounded-lg bg-orange-500/75"
       style={{
         width: `${gardenSize.width * 40}px`,
         height: `${gardenSize.height * 40}px`,
