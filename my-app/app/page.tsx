@@ -126,7 +126,7 @@ export default function HomePage() {
               <p>Price Purchased Wholesale: ${plantData.PRICE_WHOLESALE.toFixed(2)}/{plantData.AMOUNT_TYPE}</p>
               <p>Price Grown: ${plantData.PRICE_GROWN.toFixed(2)}/{plantData.AMOUNT_TYPE}</p>
               <p>Amount saved: ${(plantData.PRICE_WHOLESALE - plantData.PRICE_GROWN).toFixed(2)}</p>
-              <p className="text-[10px]">NOTE: All amounts in abbreviated formats; CWT = 100lbs</p>
+              <p className="text-[10px]">NOTE: All amounts in abbreviated formats; CWT = 100LBS</p>
             </div>
           )}
         </div>
