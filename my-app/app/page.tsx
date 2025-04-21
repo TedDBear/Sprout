@@ -2,15 +2,41 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {mockUSDAData} from "@/app/api/fetchUSDA/mockUSDAData";
-import {useState} from 'react';
+import { USDAData as fallbackData } from "@/app/api/fetchUSDA/USDAData"; // Local static fallback data
+import { fetchUSDAData } from '@/app/api/fetchUSDAData'; // API call for live USDA data
+import { useEffect, useState } from 'react';
 
 export default function HomePage() {
-
+  // Store selected plant name
   const [selectedPlant, setSelectedPlant] = useState<string | null>(null);
 
-  const plantData = selectedPlant ? mockUSDAData[selectedPlant.toUpperCase()] : null;
-  
+  // Store USDA data for the selected plant
+  const [plantData, setPlantData] = useState<any | null>(null);
+
+  // Try fetching fresh USDA data when the user selects a plant
+  useEffect(() => {
+    const getData = async () => {
+      if (!selectedPlant) return;
+
+      try {
+        // Try getting live USDA data
+        const freshData = await fetchUSDAData(selectedPlant);
+        if (freshData) {
+          setPlantData(freshData);
+        } else {
+          // If no result from API, fallback to static file
+          setPlantData(fallbackData[selectedPlant.toUpperCase()]);
+        }
+      } catch (err) {
+        // If fetch fails, fallback to static USDAData
+        console.error('Error fetching USDA data:', err);
+        setPlantData(fallbackData[selectedPlant.toUpperCase()]);
+      }
+    };
+
+    getData();
+  }, [selectedPlant]);
+
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -28,7 +54,6 @@ export default function HomePage() {
         className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#B2D4A7] to-[#DAE9D5] p-8"
         style={{ minHeight: '42vh' }}
       >
-
         <div className="flex flex-col items-center justify-center h-full w-full">
           <Button 
             asChild 
@@ -80,34 +105,30 @@ export default function HomePage() {
       <div className="bg-white py-8">
         <div className="border-2 border-gray-200 rounded-lg mx-2 p-8 max-w-7xl mx-auto">
           <h2 className="text-[50px] font-bold text-green-800 mb-6 text-center">Cost Calculator</h2>
-          
-          {/*  this is where the cost/savings calc. can go!! */}
-          <div className="bg-white py-8">
-      <div className="border-2 border-gray-200 rounded-lg mx-2 p-8 max-w-7xl mx-auto">
-        <h2 className="text-[50px] font-bold text-green-800 mb-6 text-center">Cost Calculator</h2>
-        
-        <div className="text-center mb-4">
-          <select
-            className="border p-2 rounded"
-            onChange={(e) => setSelectedPlant(e.target.value)}
-            defaultValue=""
-          >
-            <option value="" disabled>Select a plant</option>
-            {Object.keys(mockUSDAData).map((plantKey) => (
-              <option key={plantKey} value={plantKey}>{plantKey}</option>
-            ))}
-          </select>
-        </div>
 
-        {plantData && (
-          <div className="text-center text-lg">
-            <p>Price Purchased Wholesale: ${plantData.PRICE_WHOLESALE.toFixed(2)}</p>
-            <p>Price Grown: ${plantData.PRICE_GROWN.toFixed(2)}</p>
-            <p>Amount saved: ${(plantData.PRICE_WHOLESALE - plantData.PRICE_GROWN).toFixed(2)}</p>
+          {/* Plant selection dropdown */}
+          <div className="text-center mb-4">
+            <select
+              className="border p-2 rounded"
+              onChange={(e) => setSelectedPlant(e.target.value)}
+              defaultValue=""
+            >
+              <option value="" disabled>Select a plant</option>
+              {Object.keys(fallbackData).map((plantKey) => (
+                <option key={plantKey} value={plantKey}>{plantKey}</option>
+              ))}
+            </select>
           </div>
-        )}
-      </div>
-    </div>
+
+          {/* Display pricing and savings info */}
+          {plantData && (
+            <div className="text-center text-lg">
+              <p>Price Purchased Wholesale: ${plantData.PRICE_WHOLESALE.toFixed(2)}/{plantData.AMOUNT_TYPE}</p>
+              <p>Price Grown: ${plantData.PRICE_GROWN.toFixed(2)}/{plantData.AMOUNT_TYPE}</p>
+              <p>Amount saved: ${(plantData.PRICE_WHOLESALE - plantData.PRICE_GROWN).toFixed(2)}</p>
+              <p className="text-[10px]">NOTE: All amounts in abbreviated formats; CWT = 100lbs</p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -137,12 +158,10 @@ export default function HomePage() {
               <p className="text-gray-600 mt-2 text-left">
                 Yes! By simply clicking the 'Save Garden' button, a .json file is downloaded to your computer. Later, you can reupload this file with the 'Load Garden' button.
               </p>
-              {/* I'm sure there are other things we can add to this F.A.Q., but I think it would be best if we keep it brief. */}
             </div>
           </div>
         </div>
       </div>
-
     </div>
   );
 }
