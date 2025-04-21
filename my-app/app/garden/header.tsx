@@ -1,4 +1,5 @@
 import {Button} from '@/components/ui/button'
+import Link from 'next/link';
 
 export default function Header({clearGarden, saveGarden, loadGarden}) {
     // Create a hidden file input element that we'll use for loading files
@@ -24,7 +25,10 @@ export default function Header({clearGarden, saveGarden, loadGarden}) {
 
       return (
         <div className="flex justify-between items-center mb-6 p-4 bg-white shadow-lg rounded-lg">
-            <Button variant="outline">Back</Button>
+            <Button variant="outline"> 
+                <Link href="/">
+                    Back 
+                </Link></Button>
             <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
             <div className="space-x-2">
                 <Button variant="outline" onClick={(event) => saveGarden(event)}>Save Garden...</Button>
