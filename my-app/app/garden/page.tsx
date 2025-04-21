@@ -398,7 +398,7 @@ const plantCompatibility = {
   "Potato": {
     incompatibleWith: [
       {
-        name: "Potato",
+        name: "Tomato",
         message: "Tomatoes and potatoes are both susceptible to blight, which can spread between them.",
         minDistance: 10
       }
