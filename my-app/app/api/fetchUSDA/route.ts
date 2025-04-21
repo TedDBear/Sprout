@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     }
 
     const avg = prices.reduce((a, b) => a + b, 0) / prices.length;
-    const unit = rows[0].unit_desc || 'CWT';
+    const unit = rows[0].unit_desc.substring(4) || 'CWT';
 
     return NextResponse.json({
       PRICE_WHOLESALE: parseFloat(avg.toFixed(2)),
