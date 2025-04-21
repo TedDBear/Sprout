@@ -142,7 +142,7 @@ const plants = [
       "name": "Blueberry",
       "image": blueberry,
       "description": "Deciduous fruiting shrub (perennial). Produces small blue-purple berries. Often has attractive fall foliage.",
-      "spaceRequired": 3,
+      "spaceRequired": 2.5,
       "size": {"width": 50, "height": 50},
       "apiTag": "Blueberry",
       "waterAmount": "Medium",
@@ -398,7 +398,7 @@ const plantCompatibility = {
   "Potato": {
     incompatibleWith: [
       {
-        name: "Potato",
+        name: "Tomato",
         message: "Tomatoes and potatoes are both susceptible to blight, which can spread between them.",
         minDistance: 10
       }
