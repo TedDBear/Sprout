@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { USDAData as fallbackData } from "@/app/api/fetchUSDA/USDAData"; // Local static fallback data
 import { fetchUSDAData } from '@/app/api/fetchUSDAData'; // API call for live USDA data
 import { useEffect, useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react'; // Icons for the FAQ
 
 export default function HomePage() {
   // Store selected plant name
@@ -36,6 +37,25 @@ export default function HomePage() {
 
     getData();
   }, [selectedPlant]);
+
+   const toggleFaq = (index: number) => {
+    setFaqOpen(openFaq === index ? null : index);
+  }
+
+  const faq = [
+    {
+      question: "How do I use Sprout?",
+      answer: "1. Click 'Start Your Garden' <br>2. Search your desired plant in the left plant menu, then simply drag and drop them onto the garden bed grid!"
+    },
+    {
+      question: "Can you learn how to garden with Sprout?",
+      answer: "You can learn the basics! Sprout is a tool created for new gardeners, as it offers plentiful information on a plants needs and where you should plant things in relation to each other."
+    },
+    {
+      question: "Can I save my garden designs?",
+      answer: "Yes! By simply clicking the 'Save Garden' button, a .json file is downloaded to your computer. Later, you can reupload this file with the 'Load Garden' button."
+    }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -137,28 +157,36 @@ export default function HomePage() {
         <div className="border-2 border-gray-200 rounded-lg mx-2 p-8 max-w-7xl mx-auto">
           <h2 className="text-[50px] font-bold text-green-800 mb-6 text-center">F.A.Q</h2>
           
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-bold text-gray-700 text-left">How do I use Sprout?</h3>
-              <p className="text-gray-600 mt-2 text-left">
-                1. Click 'Start Your Garden' <br></br>
-                2. Search your desired plant in the left plant menu, then simply drag and drop them onto the garden bed grid!
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-gray-700 text-left">Can you learn how to garden with Sprout?</h3>
-              <p className="text-gray-600 mt-2 text-left">
-                You can learn the basics! Sprout is a tool created for new gardeners, as it offers plentiful information on a plants needs and where you should plant things in relation to eachother. 
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold text-gray-700 text-left">Can I save my garden designs?</h3>
-              <p className="text-gray-600 mt-2 text-left">
-                Yes! By simply clicking the 'Save Garden' button, a .json file is downloaded to your computer. Later, you can reupload this file with the 'Load Garden' button.
-              </p>
-            </div>
+          <div className="space-y-2">
+          {faq.map((item, index) => (
+              <div key={index} className="border-b border-gray-200 pb-2">
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="flex w-full items-center justify-between py-3 text-left"
+                  aria-expanded={openFaq === index}
+                  aria-controls={`faq-${index}`}
+                >
+                  <h3 className="font-bold text-gray-700">{item.question}</h3>
+                  {openFaq === index ? (
+                    <ChevronUp className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+                
+                <div
+                  id={`faq-${index}`}
+                  className={`overflow-hidden transition-all duration-300 ${
+                    openFaq === index ? 'max-h-40' : 'max-h-0'
+                  }`}
+                >
+                  <p 
+                    className="text-gray-600 pb-2" 
+                    dangerouslySetInnerHTML={{ __html: item.answer }}
+                  ></p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
