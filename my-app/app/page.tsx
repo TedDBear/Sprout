@@ -72,7 +72,7 @@ export default function HomePage() {
       {/* Start Your Garden Button Section */}
       <section 
         className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#B2D4A7] to-[#DAE9D5] p-8"
-        style={{ minHeight: '42vh' }}
+        style={{ minHeight: '50vh' }}
       >
         <div className="flex flex-col items-center justify-center h-full w-full">
           <Button 
