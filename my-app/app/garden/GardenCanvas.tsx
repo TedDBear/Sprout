@@ -81,8 +81,9 @@ export default function GardenCanvas({
   };
 
   return (
+    <div className="flex justify-center">
     <div
-      className="border-2 border-green-200 relative rounded-lg bg-orange-500/75"
+      className="border-2 border-amber-950 relative rounded-lg bg-[#ad8878]"
       style={{
         width: `${gardenSize.width * 40}px`,
         height: `${gardenSize.height * 40}px`,
@@ -157,6 +158,7 @@ export default function GardenCanvas({
           </div>
         );
       })}
+    </div>
     </div>
   );
 }
