@@ -59,12 +59,16 @@ export default function RightSidebar({
             <p className="opacity-0">_</p>
             <p>Description:</p>
             <p className="text-sm text-gray-600 mb-4">{selectedPlant.description}</p>
-            <p className="opacity-0">_</p>
             <p>Water Requirements:</p>
             <p className="text-sm text-gray-600 mb-4">{selectedPlant.waterAmount}</p>
-            <p className="opacity-0">_</p>
             <p>Sunlight Needs:</p>
             <p className="text-sm text-gray-600 mb-4">{selectedPlant.lightLevel}</p>
+            <p>Spacing:</p>
+            <p className="text-sm text-gray-600 mb-4">{selectedPlant.spacing}</p>
+            <p>Planting Depth:</p>
+            <p className="text-sm text-gray-600 mb-4">{selectedPlant.depth}</p>
+            <p>Notes:</p>
+            <p className="text-sm text-gray-600 mb-4 text-center">{selectedPlant.notes}</p>
           </div>
         </CardContent>
       </Card>
