@@ -36,7 +36,10 @@ const plants = [
         "size": {"width": 50, "height": 50},
         "apiTag": "Tomato",
         "waterAmount": "Medium",
-        "lightLevel": "Full sun"
+        "lightLevel": "Full sun",
+        "spacing": "24-36 inches",
+        "depth":"1/4th inch (seed)",
+        "notes":"It is best to grow plants purchased that are about 6-8 inches tall."
     },
     {
       "name": "Carrot",
@@ -46,7 +49,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Carrot",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "12 inches",
+      "depth":"1/2 inch",
+      "notes": "Harvest when 1-1.5 inches in diameter."
     },
     {
       "name": "Corn",
@@ -56,7 +62,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Corn",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "12-24 inches",
+      "depth":"1 inch",
+      "notes":"Harvest after the silk has turned dark brown."
     },
     {
       "name": "Potato",
@@ -66,7 +75,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Potato",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "8-12 inches",
+      "depth":"6 inches(from seed potatoes)",
+      "notes": "Cut seed potatoes into quarters, then plant. Harvest when tops die."
     },
     {
       "name": "Cabbage",
@@ -76,7 +88,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Cabbage",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "24 inches",
+      "depth":"1/4th inch",
+      "notes":"None."
     },
     {
       "name": "Bell Pepper",
@@ -86,7 +101,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Bell Pepper",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "18-24 inches",
+      "depth":"1/4th inch",
+      "notes":"Harvest when dark green, or later when they ripen to red, yellow, or purple."
     },
     {
       "name": "Broccoli",
@@ -96,7 +114,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Broccoli",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "12-18 inches",
+      "depth":"1/4th inch",
+      "notes":"Harvest when head is 6-8 inches in diameter."
     },
     {
       "name": "Green bean",
@@ -106,7 +127,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Green bean",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "12-15 inches",
+      "depth":"1 inch",
+      "notes":"Harvesting when ripe encourages more production."
     },
     {
       "name": "Garlic",
@@ -116,7 +140,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Garlic",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "6 inches",
+      "depth":"1 inch",
+      "notes":"Harvest when lower leaves begin to brown, then dry for 10-14 days to increase shelf life."
   },
   {
       "name": "Onion",
@@ -126,7 +153,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Onion",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "6-10 inches",
+      "depth":"1/4th inch",
+      "notes":"Harvest when leaves fall over, then dry for 1-2 days."
   },
   {
       "name": "Pumpkin",
@@ -136,7 +166,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Pumpkin",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "24 inches",
+      "depth":"1/2-3/4th inch",
+      "notes":"Harvest when bright orange."
     },
     {
       "name": "Blueberry",
@@ -146,7 +179,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Blueberry",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "5-6ft",
+      "depth":"1/4th inch",
+      "notes":"None."
     },
     {
       "name": "Watermelon",
@@ -156,7 +192,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Watermelon",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "24 inches",
+      "depth":"1-1.5 inches",
+      "notes":"Plant six to eight seeds in one plot."
     },
     {
       "name": "Strawberry",
@@ -166,7 +205,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Strawberry",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun - Partial shade"
+      "lightLevel": "Full sun - Partial shade",
+      "spacing": "12-15 inches",
+      "depth":"1/4th inch",
+      "notes":"None."
     },
     {
       "name": "Basil",
@@ -176,7 +218,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Basil",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "12 inches",
+      "depth":"1/4th inch",
+      "notes":"None."
   },
   {
       "name": "Rosemary",
@@ -186,7 +231,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Rosemary",
       "waterAmount": "Low",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "12 inches",
+      "depth":"1/4th inch",
+      "notes":"None."
     },
     {
       "name": "Sage",
@@ -196,7 +244,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Sage",
       "waterAmount": "Low",
-      "lightLevel": "Full sun - Partial shade"
+      "lightLevel": "Full sun - Partial shade",
+      "spacing": "12-15 inches",
+      "depth":"1/4th inch",
+      "notes":"None."
     },
     {
       "name": "Lily",
@@ -206,7 +257,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Lily",
       "waterAmount": "Low",
-      "lightLevel": "Full shade"
+      "lightLevel": "Full shade",
+      "spacing": "18-24 inches",
+      "depth":"2-4inches for small varieties, 6 inches large varieties.",
+      "notes":"Plant bulbs in groups of three. Very toxic to pets."
     },
     {
       "name": "Rose",
@@ -216,7 +270,10 @@ const plants = [
       "size": {"width": 50, "height": 50},
       "apiTag": "Rose",
       "waterAmount": "Medium",
-      "lightLevel": "Full sun"
+      "lightLevel": "Full sun",
+      "spacing": "24-36 inches",
+      "depth":"1/4th inch",
+      "notes":"Requires careful pruning for best blooms."
     },
     {
       "name": "Tulip",
@@ -227,6 +284,9 @@ const plants = [
       "apiTag": "Tulip",
       "waterAmount": "Medium",
       "lightLevel": "Full sun",
+      "spacing": "18-24 inches",
+      "depth":"6-8 inches",
+      "notes":"Toxic to pets."
     },
   ];
 
