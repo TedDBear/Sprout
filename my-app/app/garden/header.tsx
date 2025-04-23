@@ -1,7 +1,21 @@
 import {Button} from '@/components/ui/button'
+import { warn } from 'console';
 import Link from 'next/link';
+import React, { useState, useRef, useCallback } from "react";
 
-export default function Header({clearGarden, saveGarden, loadGarden}) {
+export default function Header({clearGarden, saveGarden, loadGarden, toggleWarnings, enableWarnings}) {
+    const [warningsOnorOff, setWarningsOnorOff] = useState("off");
+
+    //Toggle warnings in the main page and allow the button to show the state of warnings
+    const turnWarningsOnorOff = () => {
+        if (warningsOnorOff == "off")
+            setWarningsOnorOff("on");
+        else
+            setWarningsOnorOff("off");
+
+        toggleWarnings();
+    }
+
     // Create a hidden file input element that we'll use for loading files
     const handleLoadClick = () => {
         // Create a hidden file input element
@@ -31,6 +45,10 @@ export default function Header({clearGarden, saveGarden, loadGarden}) {
                 </Link></Button>
             <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
             <div className="space-x-2">
+                
+                <Button variant="outline" onClick={(event) => turnWarningsOnorOff()} className="warningToggle">
+                    Turn some warnings {warningsOnorOff}
+                </Button>
                 <Button variant="outline" onClick={(event) => saveGarden(event)}>Save Garden...</Button>
                 <Button variant="outline" onClick={handleLoadClick}>Load Garden...</Button>
                 <Button variant="destructive" onClick={(event) => clearGarden(event)}>Clear Garden</Button>

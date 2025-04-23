@@ -438,6 +438,7 @@ export default function SproutGarden() {
   const [draggedPlant, setDraggedPlant] = useState(null);
   const [draggedIndex, setDraggedIndex] = useState(-1);
   const [selectedPlant, setSelectedPlant] = useState(null);
+  const [enableWarnings, setEnableWarnings] = useState(true);
   const dragImageRef = useRef(null);
   
     // Improved collision detection
@@ -473,35 +474,36 @@ const checkPlantCollision = (newPlant, excludeId = null) => {
   
     existingPlants.forEach(existingPlant => {
       const newPlantCompatibility = plantCompatibility[newPlant.name];
-      
-      if (newPlantCompatibility?.incompatibleWith) {
-        // Find the specific incompatibility for this plant pair
-        const incompatibilityRule = newPlantCompatibility.incompatibleWith.find(
-          rule => rule.name === existingPlant.name
-        );
-  
-        if (incompatibilityRule) {
-          // Calculate the distance between plant centers
-          const distance = Math.sqrt(
-            Math.pow(
-              (newPlant.x + (newPlant.size?.width || 40) / 2) - 
-              (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
-            ) + 
-            Math.pow(
-              (newPlant.y + (newPlant.size?.height || 40) / 2) - 
-              (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
-            )
-          ) / 40; // Convert to feet
-  
-          // Check if plants are closer than the minimum safe distance
-          if (distance <= incompatibilityRule.minDistance) {
-            incompatibilityWarnings.push({
-              plant1: newPlant.name,
-              plant2: existingPlant.name,
-              distance: distance.toFixed(1),
-              warningMessage: incompatibilityRule.message,
-              minDistance: incompatibilityRule.minDistance
-            });
+      if (enableWarnings) {
+        if (newPlantCompatibility?.incompatibleWith) {
+          // Find the specific incompatibility for this plant pair
+          const incompatibilityRule = newPlantCompatibility.incompatibleWith.find(
+            rule => rule.name === existingPlant.name
+          );
+    
+          if (incompatibilityRule) {
+            // Calculate the distance between plant centers
+            const distance = Math.sqrt(
+              Math.pow(
+                (newPlant.x + (newPlant.size?.width || 40) / 2) - 
+                (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
+              ) + 
+              Math.pow(
+                (newPlant.y + (newPlant.size?.height || 40) / 2) - 
+                (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
+              )
+            ) / 40; // Convert to feet
+    
+            // Check if plants are closer than the minimum safe distance
+            if (distance <= incompatibilityRule.minDistance) {
+              incompatibilityWarnings.push({
+                plant1: newPlant.name,
+                plant2: existingPlant.name,
+                distance: distance.toFixed(1),
+                warningMessage: incompatibilityRule.message,
+                minDistance: incompatibilityRule.minDistance
+              });
+            }
           }
         }
       }
@@ -509,6 +511,12 @@ const checkPlantCollision = (newPlant, excludeId = null) => {
   
     return incompatibilityWarnings;
   };
+
+  
+  //Toggle warnings as a result of the button press in the header
+  const toggleWarnings = () => {
+    setEnableWarnings(prev => !prev);
+}
 
   // Handle plant drag start from left panel
   const handleNewPlantDragStart = (plant, imgElement) => (e) => {
@@ -820,6 +828,8 @@ const checkPlantCollision = (newPlant, excludeId = null) => {
           clearGarden={clearGarden}
           saveGarden={saveGarden}
           loadGarden={loadGarden}
+          toggleWarnings={toggleWarnings}
+          enableWarnings={enableWarnings}
         />
         {/* Main Content */} 
         <div className="flex gap-4 max-w-8xl mx-auto">
@@ -855,6 +865,7 @@ const checkPlantCollision = (newPlant, excludeId = null) => {
             onDelete={handleDeletePlant}
           />
         </div>
+        
       </div>
   );
 }
