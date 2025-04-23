@@ -4,14 +4,14 @@ import Link from 'next/link';
 import React, { useState, useRef, useCallback } from "react";
 
 export default function Header({clearGarden, saveGarden, loadGarden, toggleWarnings, enableWarnings}) {
-    const [warningsOnorOff, setWarningsOnorOff] = useState("off");
+    const [warningsOnorOff, setWarningsOnorOff] = useState("on");
 
     //Toggle warnings in the main page and allow the button to show the state of warnings
     const turnWarningsOnorOff = () => {
-        if (warningsOnorOff == "off")
-            setWarningsOnorOff("on");
-        else
+        if (warningsOnorOff == "on")
             setWarningsOnorOff("off");
+        else
+            setWarningsOnorOff("on");
 
         toggleWarnings();
     }
@@ -46,7 +46,7 @@ export default function Header({clearGarden, saveGarden, loadGarden, toggleWarni
                     </Link>
                 </Button>
                 <Button variant="outline" onClick={(event) => turnWarningsOnorOff()} className="warningToggle">
-                    Turn some warnings {warningsOnorOff}
+                    Incompatilbilty warnings: {warningsOnorOff}
                 </Button>
             </div>
             <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
