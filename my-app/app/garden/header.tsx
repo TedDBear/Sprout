@@ -39,16 +39,18 @@ export default function Header({clearGarden, saveGarden, loadGarden, toggleWarni
 
       return (
         <div className="flex justify-between items-center mb-6 p-4 bg-white shadow-lg rounded-lg">
-            <Button variant="outline"> 
-                <Link href="/">
-                    Back 
-                </Link></Button>
-            <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
-            <div className="space-x-2">
-                
+            <div className="flex gap-2">
+                <Button variant="outline"> 
+                    <Link href="/">
+                        Back 
+                    </Link>
+                </Button>
                 <Button variant="outline" onClick={(event) => turnWarningsOnorOff()} className="warningToggle">
                     Turn some warnings {warningsOnorOff}
                 </Button>
+            </div>
+            <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
+            <div className="space-x-2">
                 <Button variant="outline" onClick={(event) => saveGarden(event)}>Save Garden...</Button>
                 <Button variant="outline" onClick={handleLoadClick}>Load Garden...</Button>
                 <Button variant="destructive" onClick={(event) => clearGarden(event)}>Clear Garden</Button>
