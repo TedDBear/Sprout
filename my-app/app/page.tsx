@@ -6,6 +6,7 @@ import { USDAData as fallbackData } from "@/app/api/fetchUSDA/USDAData"; // Loca
 import { fetchUSDAData } from '@/app/api/fetchUSDAData'; // API call for live USDA data
 import { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react'; // Icons for the FAQ
+import Sprout from "@/app/sprout.png";
 
 export default function HomePage() {
   const[openFaq, setFaqOpen] = useState(null);
@@ -65,6 +66,13 @@ export default function HomePage() {
 
         {/* Homepage Header */}
         <header className="flex justify-between items-center mb-6 p-4 bg-white shadow-lg rounded-lg mx-4 mt-4">
+          <div className="flex -space-x-1 mr-3">
+            <img
+              src={Sprout.src}
+              alt="Sprout"
+              className="h-10 w-10 object-contain opacity-90 hover:scale-110 transition-transform" 
+            </img>
+          </div>
           <h1 className="text-4xl font-extrabold text-green-800 tracking-wide">SPROUT</h1>
           <span className="text-gray-400 text-sm italic ">your garden planner</span>
         </header>
