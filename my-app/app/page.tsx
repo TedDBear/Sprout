@@ -140,8 +140,7 @@ export default function HomePage() {
               ))}
             </select>
           </div>
-        </div>
-      </div>
+
 
           {/* Display pricing and savings info */}
           {plantData && (
