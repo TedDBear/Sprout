@@ -1,931 +1,1094 @@
-"use client";
-import React, { useState, useRef, useCallback } from "react";
-import Header from "./header";
-import LeftSidebar from "./LeftSidebar";
-import RightSidebar from "./RightSideBar";
-import GardenCanvas from "./GardenCanvas";
-import GardenSizeControls from "./GardenSizeControls";
-import corn from "./graphics/Corn.svg";
-import cabbage from "./graphics/Cabbage.svg";
-import blueberry from "./graphics/Blueberry.svg";
-import carrot from "./graphics/Carrot.svg";
-import garlic from "./graphics/Garlic.svg";
-import onion from "./graphics/Onion.svg";
-import BellPepper from "./graphics/Bell Pepper.svg"
-import Basil from "./graphics/Basil.svg"
-import Broccoli from "./graphics/Broccoli.svg"
-import Rose from "./graphics/Rose.svg"
-import GreenBean from "./graphics/Green bean.svg"
-import Potato from "./graphics/Potato.svg"
-import Pumpkin from "./graphics/Pumpkin.svg"
-import Rosemary from "./graphics/Rosemary.svg"
-import Sage from "./graphics/Sage.svg"
-import Strawberry from "./graphics/Strawberry.svg"
-import Lily from "./graphics/Lily.svg"
-import Tomato from "./graphics/Tomato.svg"
-import Watermelon from "./graphics/Watermelon.svg"
-import Tulip from "./graphics/Tulip.svg"
+'use client'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
+import Header from './header'
+import LeftSidebar from './LeftSidebar'
+import RightSidebar from './RightSideBar'
+import GardenCanvas from './GardenCanvas'
+import GardenSizeControls from './GardenSizeControls'
+import corn from './graphics/Corn.svg'
+import cabbage from './graphics/Cabbage.svg'
+import blueberry from './graphics/Blueberry.svg'
+import carrot from './graphics/Carrot.svg'
+import garlic from './graphics/Garlic.svg'
+import onion from './graphics/Onion.svg'
+import BellPepper from './graphics/Bell Pepper.svg'
+import Basil from './graphics/Basil.svg'
+import Broccoli from './graphics/Broccoli.svg'
+import Rose from './graphics/Rose.svg'
+import GreenBean from './graphics/Green bean.svg'
+import Potato from './graphics/Potato.svg'
+import Pumpkin from './graphics/Pumpkin.svg'
+import Rosemary from './graphics/Rosemary.svg'
+import Sage from './graphics/Sage.svg'
+import Strawberry from './graphics/Strawberry.svg'
+import Lily from './graphics/Lily.svg'
+import Tomato from './graphics/Tomato.svg'
+import Watermelon from './graphics/Watermelon.svg'
+import Tulip from './graphics/Tulip.svg'
 
-// Define plant space requirements (in feet)
+// --- Constants (Plant Data, Compatibility Rules) ---
+
 const plants = [
-    {
-        "name": "Tomato",
-        "image": Tomato,
-        "description": "Fruiting plant, grown as an annual. Comes in vining or bush types. Diverse fruit sizes/colors.",
-        "spaceRequired": 2,
-        "size": {"width": 50, "height": 50},
-        "apiTag": "Tomato",
-        "waterAmount": "Medium",
-        "lightLevel": "Full sun",
-        "spacing": "24-36 inches",
-        "depth":"1/4th inch (seed)",
-        "notes":"It is best to grow plants purchased that are about 6-8 inches tall."
-    },
-    {
-      "name": "Carrot",
-      "image": carrot,
-      "description": "A root vegetable. It is usually orange in color, but some cultivars are purple, black, red, white, and yellow.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Carrot",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "12 inches",
-      "depth":"1/2 inch",
-      "notes": "Harvest when 1-1.5 inches in diameter."
-    },
-    {
-      "name": "Corn",
-      "image": corn,
-      "description": "A leafy stalk that produces ears after pollination.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Corn",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "12-24 inches",
-      "depth":"1 inch",
-      "notes":"Harvest after the silk has turned dark brown."
-    },
-    {
-      "name": "Potato",
-      "image": Potato,
-      "description": "A starchy root vegetable.",
-      "spaceRequired": 2,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Potato",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "8-12 inches",
-      "depth":"6 inches(from seed potatoes)",
-      "notes": "Cut seed potatoes into quarters, then plant. Harvest when tops die."
-    },
-    {
-      "name": "Cabbage",
-      "image": cabbage,
-      "description": "Dense, layered heads grow on stalks and are surrounded by looser outer leaves. Its leaves can be green, white, or purple in color, and smooth or crinkly in texture. Depending on the variety, the head can be round, oblong, or flat.",
-      "spaceRequired": 2,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Cabbage",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "24 inches",
-      "depth":"1/4th inch",
-      "notes":"None."
-    },
-    {
-      "name": "Bell Pepper",
-      "image": BellPepper,
-      "description": "Sweet pepper variety (no heat) with blocky, thick-walled fruit. Matures from green to various colors. Bushy plant, grown as an annual.",
-      "spaceRequired": 1.5,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Bell Pepper",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "18-24 inches",
-      "depth":"1/4th inch",
-      "notes":"Harvest when dark green, or later when they ripen to red, yellow, or purple."
-    },
-    {
-      "name": "Broccoli",
-      "image": Broccoli,
-      "description": "Large flower heads known as 'crowns' that are green to blue-green in color, grouped tightly together atop a thick stem, and surrounded by leaves.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Broccoli",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "12-18 inches",
-      "depth":"1/4th inch",
-      "notes":"Harvest when head is 6-8 inches in diameter."
-    },
-    {
-      "name": "Green bean",
-      "image": GreenBean,
-      "description": "An upright bush bean with medium-thick green pods.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Green bean",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "12-15 inches",
-      "depth":"1 inch",
-      "notes":"Harvesting when ripe encourages more production."
-    },
-    {
-      "name": "Garlic",
-      "image": garlic,
-      "description": "A bulbous root separated into cloves and a tall stalk with branching leaves.",
-      "spaceRequired": 0.5,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Garlic",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "6 inches",
-      "depth":"1 inch",
-      "notes":"Harvest when lower leaves begin to brown, then dry for 10-14 days to increase shelf life."
+  {
+    name: 'Tomato',
+    image: Tomato,
+    description:
+      'Fruiting plant, grown as an annual. Comes in vining or bush types. Diverse fruit sizes/colors.',
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    apiTag: 'Tomato',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '24-36 inches',
+    depth: '1/4th inch (seed)',
+    notes:
+      'It is best to grow plants purchased that are about 6-8 inches tall.',
+    problemPlants: [],
+    hasWarning: false
   },
   {
-      "name": "Onion",
-      "image": onion,
-      "description": "A bulbous vegetable. It comes in different colors, including white, yellow, and red.",
-      "spaceRequired": 0.5,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Onion",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "6-10 inches",
-      "depth":"1/4th inch",
-      "notes":"Harvest when leaves fall over, then dry for 1-2 days."
+    name: 'Carrot',
+    image: carrot,
+    description:
+      'A root vegetable. It is usually orange in color, but some cultivars are purple, black, red, white, and yellow.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Carrot',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '12 inches',
+    depth: '1/2 inch',
+    notes: 'Harvest when 1-1.5 inches in diameter.',
+    problemPlants: [],
+    hasWarning: false
   },
   {
-      "name": "Pumpkin",
-      "image": Pumpkin,
-      "description": "Squash cultivars that are round to oval in shape with thick, slightly ribbed skin that varies from deep yellow to orange in color. Their flesh ranges from yellow to gold and has large seeds.",
-      "spaceRequired": 2,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Pumpkin",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "24 inches",
-      "depth":"1/2-3/4th inch",
-      "notes":"Harvest when bright orange."
-    },
-    {
-      "name": "Blueberry",
-      "image": blueberry,
-      "description": "Deciduous fruiting shrub (perennial). Produces small blue-purple berries. Often has attractive fall foliage.",
-      "spaceRequired": 2.5,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Blueberry",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "5-6ft",
-      "depth":"1/4th inch",
-      "notes":"None."
-    },
-    {
-      "name": "Watermelon",
-      "image": Watermelon,
-      "description": "A species of melon that produces round or oblong fruits with thick skin and sweet, watery flesh.",
-      "spaceRequired": 2,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Watermelon",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "24 inches",
-      "depth":"1-1.5 inches",
-      "notes":"Plant six to eight seeds in one plot."
-    },
-    {
-      "name": "Strawberry",
-      "image": Strawberry,
-      "description": "A sweet, bright red fruit.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Strawberry",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun - Partial shade",
-      "spacing": "12-15 inches",
-      "depth":"1/4th inch",
-      "notes":"None."
-    },
-    {
-      "name": "Basil",
-      "image": Basil,
-      "description": "Aromatic culinary herb, typically grown as an annual. Prized for flavorful leaves. Upright, bushy growth.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Basil",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "12 inches",
-      "depth":"1/4th inch",
-      "notes":"None."
+    name: 'Corn',
+    image: corn,
+    description: 'A leafy stalk that produces ears after pollination.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Corn',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '12-24 inches',
+    depth: '1 inch',
+    notes: 'Harvest after the silk has turned dark brown.',
+    problemPlants: [],
+    hasWarning: false
   },
   {
-      "name": "Rosemary",
-      "image": Rosemary,
-      "description": "A woody, perennial herb with fragrant, evergreen, needle-like leaves and white, pink, purple, or blue flowers, native to the Mediterranean region.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Rosemary",
-      "waterAmount": "Low",
-      "lightLevel": "Full sun",
-      "spacing": "12 inches",
-      "depth":"1/4th inch",
-      "notes":"None."
-    },
-    {
-      "name": "Sage",
-      "image": Sage,
-      "description": "An evergreen shrub with woody stems, soft green-gray leaves, and blue to purplish flowers.",
-      "spaceRequired": 1,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Sage",
-      "waterAmount": "Low",
-      "lightLevel": "Full sun - Partial shade",
-      "spacing": "12-15 inches",
-      "depth":"1/4th inch",
-      "notes":"None."
-    },
-    {
-      "name": "Lily",
-      "image": Lily,
-      "description": "A large, fragrant, trumpet-shaped white flower with yellow throats and maroon spots. The plant has long, narrow leaves that grow in a whorled pattern.",
-      "spaceRequired": 1.5,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Lily",
-      "waterAmount": "Low",
-      "lightLevel": "Full shade",
-      "spacing": "18-24 inches",
-      "depth":"2-4inches for small varieties, 6 inches large varieties.",
-      "notes":"Plant bulbs in groups of three. Very toxic to pets."
-    },
-    {
-      "name": "Rose",
-      "image": Rose,
-      "description": "Large, fragrant, deep red blooms.",
-      "spaceRequired": 2,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Rose",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "24-36 inches",
-      "depth":"1/4th inch",
-      "notes":"Requires careful pruning for best blooms."
-    },
-    {
-      "name": "Tulip",
-      "image": Tulip,
-      "description": "A large, cup-shaped flower that is usually red, orange or yellow in color.",
-      "spaceRequired": 1.5,
-      "size": {"width": 50, "height": 50},
-      "apiTag": "Tulip",
-      "waterAmount": "Medium",
-      "lightLevel": "Full sun",
-      "spacing": "18-24 inches",
-      "depth":"6-8 inches",
-      "notes":"Toxic to pets."
-    },
-  ];
+    name: 'Potato',
+    image: Potato,
+    description: 'A starchy root vegetable.',
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    apiTag: 'Potato',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '8-12 inches',
+    depth: '6 inches(from seed potatoes)',
+    notes:
+      'Cut seed potatoes into quarters, then plant. Harvest when tops die.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Cabbage',
+    image: cabbage,
+    description:
+      'Dense, layered heads grow on stalks and are surrounded by looser outer leaves. Its leaves can be green, white, or purple in color, and smooth or crinkly in texture. Depending on the variety, the head can be round, oblong, or flat.',
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    apiTag: 'Cabbage',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '24 inches',
+    depth: '1/4th inch',
+    notes: 'None.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Bell Pepper',
+    image: BellPepper,
+    description:
+      'Sweet pepper variety (no heat) with blocky, thick-walled fruit. Matures from green to various colors. Bushy plant, grown as an annual.',
+    spaceRequired: 1.5,
+    size: { width: 50, height: 50 },
+    apiTag: 'Bell Pepper',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '18-24 inches',
+    depth: '1/4th inch',
+    notes:
+      'Harvest when dark green, or later when they ripen to red, yellow, or purple.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Broccoli',
+    image: Broccoli,
+    description:
+      "Large flower heads known as 'crowns' that are green to blue-green in color, grouped tightly together atop a thick stem, and surrounded by leaves.",
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Broccoli',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '12-18 inches',
+    depth: '1/4th inch',
+    notes: 'Harvest when head is 6-8 inches in diameter.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Green bean',
+    image: GreenBean,
+    description: 'An upright bush bean with medium-thick green pods.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Green bean',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '12-15 inches',
+    depth: '1 inch',
+    notes: 'Harvesting when ripe encourages more production.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Garlic',
+    image: garlic,
+    description:
+      'A bulbous root separated into cloves and a tall stalk with branching leaves.',
+    spaceRequired: 0.5,
+    size: { width: 50, height: 50 },
+    apiTag: 'Garlic',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '6 inches',
+    depth: '1 inch',
+    notes:
+      'Harvest when lower leaves begin to brown, then dry for 10-14 days to increase shelf life.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Onion',
+    image: onion,
+    description:
+      'A bulbous vegetable. It comes in different colors, including white, yellow, and red.',
+    spaceRequired: 0.5,
+    size: { width: 50, height: 50 },
+    apiTag: 'Onion',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '6-10 inches',
+    depth: '1/4th inch',
+    notes: 'Harvest when leaves fall over, then dry for 1-2 days.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Pumpkin',
+    image: Pumpkin,
+    description:
+      'Squash cultivars that are round to oval in shape with thick, slightly ribbed skin that varies from deep yellow to orange in color. Their flesh ranges from yellow to gold and has large seeds.',
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    apiTag: 'Pumpkin',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '24 inches',
+    depth: '1/2-3/4th inch',
+    notes: 'Harvest when bright orange.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Blueberry',
+    image: blueberry,
+    description:
+      'Deciduous fruiting shrub (perennial). Produces small blue-purple berries. Often has attractive fall foliage.',
+    spaceRequired: 2.5,
+    size: { width: 50, height: 50 },
+    apiTag: 'Blueberry',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '5-6ft',
+    depth: '1/4th inch',
+    notes: 'None.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Watermelon',
+    image: Watermelon,
+    description:
+      'A species of melon that produces round or oblong fruits with thick skin and sweet, watery flesh.',
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    apiTag: 'Watermelon',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '24 inches',
+    depth: '1-1.5 inches',
+    notes: 'Plant six to eight seeds in one plot.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Strawberry',
+    image: Strawberry,
+    description: 'A sweet, bright red fruit.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Strawberry',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun - Partial shade',
+    spacing: '12-15 inches',
+    depth: '1/4th inch',
+    notes: 'None.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Basil',
+    image: Basil,
+    description:
+      'Aromatic culinary herb, typically grown as an annual. Prized for flavorful leaves. Upright, bushy growth.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Basil',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '12 inches',
+    depth: '1/4th inch',
+    notes: 'None.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Rosemary',
+    image: Rosemary,
+    description:
+      'A woody, perennial herb with fragrant, evergreen, needle-like leaves and white, pink, purple, or blue flowers, native to the Mediterranean region.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Rosemary',
+    waterAmount: 'Low',
+    lightLevel: 'Full sun',
+    spacing: '12 inches',
+    depth: '1/4th inch',
+    notes: 'None.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Sage',
+    image: Sage,
+    description:
+      'An evergreen shrub with woody stems, soft green-gray leaves, and blue to purplish flowers.',
+    spaceRequired: 1,
+    size: { width: 50, height: 50 },
+    apiTag: 'Sage',
+    waterAmount: 'Low',
+    lightLevel: 'Full sun - Partial shade',
+    spacing: '12-15 inches',
+    depth: '1/4th inch',
+    notes: 'None.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Lily',
+    image: Lily,
+    description:
+      'A large, fragrant, trumpet-shaped white flower with yellow throats and maroon spots. The plant has long, narrow leaves that grow in a whorled pattern.',
+    spaceRequired: 1.5,
+    size: { width: 50, height: 50 },
+    apiTag: 'Lily',
+    waterAmount: 'Low',
+    lightLevel: 'Full shade',
+    spacing: '18-24 inches',
+    depth: '2-4inches for small varieties, 6 inches large varieties.',
+    notes: 'Plant bulbs in groups of three. Very toxic to pets.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Rose',
+    image: Rose,
+    description: 'Large, fragrant, deep red blooms.',
+    spaceRequired: 2,
+    size: { width: 50, height: 50 },
+    apiTag: 'Rose',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '24-36 inches',
+    depth: '1/4th inch',
+    notes: 'Requires careful pruning for best blooms.',
+    problemPlants: [],
+    hasWarning: false
+  },
+  {
+    name: 'Tulip',
+    image: Tulip,
+    description:
+      'A large, cup-shaped flower that is usually red, orange or yellow in color.',
+    spaceRequired: 1.5,
+    size: { width: 50, height: 50 },
+    apiTag: 'Tulip',
+    waterAmount: 'Medium',
+    lightLevel: 'Full sun',
+    spacing: '18-24 inches',
+    depth: '6-8 inches',
+    notes: 'Toxic to pets.',
+    problemPlants: [],
+    hasWarning: false
+  }
+]
 
 const plantCompatibility = {
-  "Tomato": {
+  Tomato: {
     incompatibleWith: [
       {
-        name: "Potato",
-        message: "Tomatoes and potatoes are both susceptible to blight, which can spread between them.",
+        name: 'Potato',
+        message:
+          'Tomatoes and potatoes are both susceptible to blight, which can spread between them.',
         minDistance: 10
       },
       {
-        name: "Corn",
-        message: "Corn can attract pests that also target tomatoes, leading to increased pest pressure.",
+        name: 'Corn',
+        message:
+          'Corn can attract pests that also target tomatoes, leading to increased pest pressure.',
         minDistance: 10
       },
       {
-        name: "Cabbage",
-        message: "Cabbage and tomatoes can compete for nutrients and can stunt each other's growth.",
+        name: 'Cabbage',
+        message:
+          "Cabbage and tomatoes can compete for nutrients and can stunt each other's growth.",
         minDistance: 10
       }
-    ]    
-  },
-  "Carrot": {
-    incompatibleWith: [
-
     ]
   },
-  "Corn": {
+  Carrot: { incompatibleWith: [] },
+  Corn: {
     incompatibleWith: [
       {
-        name: "Cabbage", 
-        message: "Corn and cabbage compete for nutrients and can stunt each other's growth. Corn's tall structure may also shade the cabbage.",
+        name: 'Cabbage',
+        message:
+          "Corn and cabbage compete for nutrients and can stunt each other's growth. Corn's tall structure may also shade the cabbage.",
         minDistance: 10
       },
       {
-        name: "Broccoli",
-        message: "Corn and Broccoli compete for nutrients, and corn may can block the broccoli from getting enough sunlight.",      
+        name: 'Broccoli',
+        message:
+          'Corn and Broccoli compete for nutrients, and corn may can block the broccoli from getting enough sunlight.',
         minDistance: 10
       },
       {
-        name: "Tomato",
-        message: "Corn can attract pests that also target tomatoes, leading to increased pest pressure.",
+        name: 'Tomato',
+        message:
+          'Corn can attract pests that also target tomatoes, leading to increased pest pressure.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Cabbage": {
+  Cabbage: {
     incompatibleWith: [
-        {
-          name: "Strawberry",
-          message: "Strawberries can attract pests that are harmful to cabbage.",
-          minDistance: 10
-        },
-        {
-          name: "Corn", 
-          message: "Cabbage struggles when planted near corn due to nutrient competition and potential shading.",
-          minDistance: 10
-        },
-        {
-          name: "Tomato",
-          message: "Cabbage and tomatoes can compete for nutrients and scan stunt each other's growth.",
-          minDistance: 10
-        }
+      {
+        name: 'Strawberry',
+        message: 'Strawberries can attract pests that are harmful to cabbage.',
+        minDistance: 10
+      },
+      {
+        name: 'Corn',
+        message:
+          'Cabbage struggles when planted near corn due to nutrient competition and potential shading.',
+        minDistance: 10
+      },
+      {
+        name: 'Tomato',
+        message:
+          "Cabbage and tomatoes can compete for nutrients and scan stunt each other's growth.",
+        minDistance: 10
+      }
     ]
   },
-  "Blueberry": {
+  Blueberry: {
     incompatibleWith: [
-    {
-      name: "Sage",
-      message: "Sage is a part of the mint family, which spread quickly and may overtake the blueberries",
-      minDistance: 10
-    },
-    {
-      name: "Rosemary",
-      message: "Rosemary is a part of the mint family, which spread quickly and may overtake the blueberries",
-      minDistance: 10
-    },
+      {
+        name: 'Sage',
+        message:
+          'Sage is a part of the mint family, which spread quickly and may overtake the blueberries',
+        minDistance: 10
+      },
+      {
+        name: 'Rosemary',
+        message:
+          'Rosemary is a part of the mint family, which spread quickly and may overtake the blueberries',
+        minDistance: 10
+      }
     ]
   },
-  "Garlic": {
+  Garlic: {
     incompatibleWith: [
       {
-        name: "Onion", 
-        message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
+        name: 'Onion',
+        message:
+          "Garlic and Onions compete for nutrients and can stunt each other's growth.",
         minDistance: 10
       },
       {
-        name: "Green Beans", 
-        message: "The strong scent of Garlic can stunt the growth of green beans and reduce their yield.",
+        name: 'Green bean',
+        message:
+          'The strong scent of Garlic can stunt the growth of green beans and reduce their yield.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Bell Pepper": {
+  'Bell Pepper': {
     incompatibleWith: [
       {
-        name: "Strawberry", 
-        message: "Bell peppers have been known to transmit a fungal disease to strawberries.",
+        name: 'Strawberry',
+        message:
+          'Bell peppers have been known to transmit a fungal disease to strawberries.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Onion": {
+  Onion: {
     incompatibleWith: [
       {
-        name: "Garlic", 
-        message: "Garlic and Onions compete for nutrients and can stunt each other's growth.",
+        name: 'Garlic',
+        message:
+          "Garlic and Onions compete for nutrients and can stunt each other's growth.",
         minDistance: 10
       },
       {
-        name: "Pumpkin", 
-        message: "Pumpkins require a lot of water and space, which affect the onions significantly.",
+        name: 'Pumpkin',
+        message:
+          'Pumpkins require a lot of water and space, which affect the onions significantly.',
         minDistance: 10
       },
       {
-        name: "Potato", 
-        message: "Onions greatly affect the taste of potatoes.",
+        name: 'Potato',
+        message: 'Onions greatly affect the taste of potatoes.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Sage": {
+  Sage: {
     incompatibleWith: [
       {
-        name: "Blueberry", 
-        message: "Blueberries do not grow well with mint-like plants such as sage, as they tend to overtake the blueberries.",
+        name: 'Blueberry',
+        message:
+          'Blueberries do not grow well with mint-like plants such as sage, as they tend to overtake the blueberries.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Rosemary": {
+  Rosemary: {
     incompatibleWith: [
       {
-        name: "Blueberry", 
-        message: "Blueberries do not grow well with mint-like plants such as rosemary, as they tend to overtake the blueberries.",
+        name: 'Blueberry',
+        message:
+          'Blueberries do not grow well with mint-like plants such as rosemary, as they tend to overtake the blueberries.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Green Bean": {
+  'Green bean': {
     incompatibleWith: [
       {
-        name: "Garlic", 
-        message: "The strong scent of Garlic can stunt the growth of green beans and reduce their yield.",
+        name: 'Garlic',
+        message:
+          'The strong scent of Garlic can stunt the growth of green beans and reduce their yield.',
         minDistance: 10
       },
       {
-        name: "Onion", 
-        message: "The strong scent of onions can stunt the growth of green beans and reduce their yield.",
+        name: 'Onion',
+        message:
+          'The strong scent of onions can stunt the growth of green beans and reduce their yield.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Strawberry": {
+  Strawberry: {
     incompatibleWith: [
       {
-        name: "Cabbage",
-        message: "Strawberries can attract pests that are harmful to cabbage.",
+        name: 'Cabbage',
+        message: 'Strawberries can attract pests that are harmful to cabbage.',
         minDistance: 10
       },
       {
-        name: "Bell Peppers", 
-        message: "Bell peppers have been known to transmit a fungal disease to strawberries.",
+        name: 'Bell Pepper',
+        message:
+          'Bell peppers have been known to transmit a fungal disease to strawberries.',
         minDistance: 10
-      },
+      }
     ]
   },
-  "Potato": {
+  Potato: {
     incompatibleWith: [
       {
-        name: "Tomato",
-        message: "Tomatoes and potatoes are both susceptible to blight, which can spread between them.",
+        name: 'Tomato',
+        message:
+          'Tomatoes and potatoes are both susceptible to blight, which can spread between them.',
         minDistance: 10
       }
     ]
   }
-  
-};
-
-// Create a map of plant names to their image objects for easy lookup
-const plantImageMap = {
-  "Carrot": carrot,
-  "Corn": corn,
-  "Cabbage": cabbage,
-  "Blueberry": blueberry,
-  "Garlic": garlic,
-  "Onion": onion,
-  "Bell Pepper": BellPepper,
-  "Basil": Basil,
-  "Broccoli": Broccoli,
-  "Rose": Rose,
-  "Green Bean": GreenBean,
-  "Potato": Potato,
-  "Pumpkin": Pumpkin,
-  "Rosemary": Rosemary,
-  "Sage": Sage,
-  "Strawberry": Strawberry,
-  "Lily": Lily,
-  "Tulip": Tulip,
-  "Watermelon": Watermelon,
-  "Tomato": Tomato
-};
-
-export default function SproutGarden() {
-  const [gardenSize, setGardenSize] = useState({ width: 10, height: 10 });
-  const [gardenPlants, setGardenPlants] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [draggedPlant, setDraggedPlant] = useState(null);
-  const [draggedIndex, setDraggedIndex] = useState(-1);
-  const [selectedPlant, setSelectedPlant] = useState(null);
-  const [enableWarnings, setEnableWarnings] = useState(true);
-  const dragImageRef = useRef(null);
-  
-    // Improved collision detection
-const checkPlantCollision = (newPlant, excludeId = null) => {
-      return gardenPlants.some(existingPlant => {
-        // Skip the plant being moved if an ID is provided
-        if (excludeId && existingPlant.id === excludeId) {
-          return false;
-        }
-  
-        // Calculate the combined space required (in pixels)
-        const combinedSpaceRequired = (newPlant.spaceRequired + existingPlant.spaceRequired) * 40;
-        
-        // Calculate the distance between plant centers
-        const distance = Math.sqrt(
-          Math.pow(
-            (newPlant.x + (newPlant.size?.width || 40) / 2) - 
-            (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
-          ) + 
-          Math.pow(
-            (newPlant.y + (newPlant.size?.height || 40) / 2) - 
-            (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
-          )
-        );
-        
-        // Check if the distance is less than the combined space required
-        return distance < combinedSpaceRequired;
-      });
-  };
-
-  const checkPlantCompatibility = (newPlant, existingPlants) => {
-    const incompatibilityWarnings = [];
-  
-    existingPlants.forEach(existingPlant => {
-      const newPlantCompatibility = plantCompatibility[newPlant.name];
-      if (enableWarnings) {
-        if (newPlantCompatibility?.incompatibleWith) {
-          // Find the specific incompatibility for this plant pair
-          const incompatibilityRule = newPlantCompatibility.incompatibleWith.find(
-            rule => rule.name === existingPlant.name
-          );
-    
-          if (incompatibilityRule) {
-            // Calculate the distance between plant centers
-            const distance = Math.sqrt(
-              Math.pow(
-                (newPlant.x + (newPlant.size?.width || 40) / 2) - 
-                (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
-              ) + 
-              Math.pow(
-                (newPlant.y + (newPlant.size?.height || 40) / 2) - 
-                (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
-              )
-            ) / 40; // Convert to feet
-    
-            // Check if plants are closer than the minimum safe distance
-            if (distance <= incompatibilityRule.minDistance) {
-              incompatibilityWarnings.push({
-                plant1: newPlant.name,
-                plant2: existingPlant.name,
-                distance: distance.toFixed(1),
-                warningMessage: incompatibilityRule.message,
-                minDistance: incompatibilityRule.minDistance
-              });
-            }
-          }
-        }
-      }
-    });
-  
-    return incompatibilityWarnings;
-  };
-
-  
-  //Toggle warnings as a result of the button press in the header
-  const toggleWarnings = () => {
-    setEnableWarnings(prev => !prev);
 }
 
-  // Handle plant drag start from left panel
-  const handleNewPlantDragStart = (plant, imgElement) => (e) => {
-    setDraggedPlant(plant);
-    e.dataTransfer.setData("text/plain", plant.name);
-    
-    // Use the existing image element as the drag image
-    if (imgElement) {
-      // Calculate the center of the image for better positioning
-      e.dataTransfer.setDragImage(imgElement, 30, 30);
+// --- Utility Functions ---
+
+// Calculates distance between the centers of two plant objects in pixels
+const calculatePixelDistance = (plantA, plantB) => {
+  if (!plantA?.size || !plantB?.size) return Infinity // Avoid errors if size is missing
+  const centerAx = plantA.x + (plantA.size?.width || 40) / 2
+  const centerAy = plantA.y + (plantA.size?.height || 40) / 2
+  const centerBx = plantB.x + (plantB.size?.width || 40) / 2
+  const centerBy = plantB.y + (plantB.size?.height || 40) / 2
+  return Math.sqrt(
+    Math.pow(centerAx - centerBx, 2) + Math.pow(centerAy - centerBy, 2)
+  )
+}
+
+// Checks compatibility JUST between plantA and plantB based on rules and distance
+const checkSinglePairCompatibility = (plantA, plantB) => {
+  if (
+    !plantA ||
+    !plantB ||
+    plantA.id === plantB.id ||
+    !plantA.name ||
+    !plantB.name
+  ) {
+    // Added checks for name
+    return {
+      hasWarning: false,
+      message: null,
+      distance: Infinity,
+      minDistance: 0
     }
-  };
+  }
 
-  const handlePlantClick = (index, e) => {
-    setSelectedPlant(gardenPlants[index]);
-  };
+  const pixelDistance = calculatePixelDistance(plantA, plantB)
+  const distanceInFeet = pixelDistance / 40 // Convert to feet (assuming 40px = 1 foot)
 
-  // Handle existing plant drag start in garden
-  const handlePlantDragStart = (index) => (e) => {
-    setDraggedIndex(index);
-    e.dataTransfer.setData("text/plain", gardenPlants[index].name);
-  };
+  // Check A -> B incompatibility
+  const compatibilityA = plantCompatibility[plantA.name]
+  const ruleA = compatibilityA?.incompatibleWith?.find(
+    rule => rule.name === plantB.name
+  )
+  if (ruleA && distanceInFeet <= ruleA.minDistance) {
+    return {
+      hasWarning: true,
+      message: ruleA.message,
+      distance: distanceInFeet,
+      minDistance: ruleA.minDistance
+    }
+  }
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const rect = e.currentTarget.getBoundingClientRect();
-    // Adjust position calculation based on plant-specific size
-    const x = e.clientX - rect.left - (draggedPlant?.size?.width || 40) / 2;
-    const y = e.clientY - rect.top - (draggedPlant?.size?.height || 40) / 2;
+  // Check B -> A incompatibility
+  const compatibilityB = plantCompatibility[plantB.name]
+  const ruleB = compatibilityB?.incompatibleWith?.find(
+    rule => rule.name === plantA.name
+  )
+  if (ruleB && distanceInFeet <= ruleB.minDistance) {
+    return {
+      hasWarning: true,
+      // Use B's message if available, otherwise fallback to A's (if it existed but distance was ok before)
+      message: ruleB.message || ruleA?.message,
+      distance: distanceInFeet,
+      minDistance: ruleB.minDistance
+    }
+  }
 
-    // Ensure the plant stays within the garden bounds
-    const maxX = gardenSize.width * 40 - (draggedPlant?.size?.width || 40);
-    const maxY = gardenSize.height * 40 - (draggedPlant?.size?.height || 40);
+  // No incompatibility found within minimum distance
+  return {
+    hasWarning: false,
+    message: null,
+    distance: distanceInFeet,
+    minDistance: 0
+  }
+}
 
-    const clampedX = Math.max(0, Math.min(x, maxX));
-    const clampedY = Math.max(0, Math.min(y, maxY));
+// Calculates all warnings for a given array of plants
+// Returns a NEW array with NEW plant objects containing updated warning info
+const calculateWarningsForGarden = (currentPlants, warningsEnabled = true) => {
+  // Map to new objects to ensure immutability from the start
+  let plantsWithData = currentPlants.map(plant => ({
+    ...plant, // Copy existing properties
+    problemPlants: [], // Reset/Initialize problem list
+    hasWarning: false, // Reset/Initialize warning flag
+    warningMessages: [] // Optional: store specific messages
+  }))
 
-    if (draggedPlant) {
-      // Create new plant object with specific details
-      const newPlant = { 
-        ...draggedPlant, 
-        x: clampedX, 
-        y: clampedY,
-        id: Date.now().toString(), // Add unique ID for each plant
-      };
+  if (warningsEnabled) {
+    // Compare every pair of plants
+    for (let i = 0; i < plantsWithData.length; i++) {
+      for (let j = i + 1; j < plantsWithData.length; j++) {
+        // Start j from i + 1
+        const plantA = plantsWithData[i]
+        const plantB = plantsWithData[j]
 
-      // Check for collision before adding
-      if (!checkPlantCollision(newPlant)) {
-        // Then check for plant compatibility
-        const compatibilityWarnings = checkPlantCompatibility(newPlant, gardenPlants);
-  
-        if (compatibilityWarnings.length > 0) {
-          // Create a more detailed warning message
-          const warningText = compatibilityWarnings.map(warning => 
-            `Warning: ${warning.plant1} and ${warning.plant2} are too close (${warning.distance} ft apart). 
-  Recommended minimum distance: ${warning.minDistance} ft.
-  ${warning.warningMessage}`
-          ).join('\n\n');
-  
-          // Optional: You could replace this with a more user-friendly notification system
-          const userConfirmed = window.confirm(warningText + "\n\nDo you want to place the plant anyway?");
-  
-          if (!userConfirmed) {
-            setDraggedPlant(null);
-            return; // Stop placement if user cancels
-          }
-        }
-  
-        // If no collision and user confirms (or no warnings), add the plant
-        setGardenPlants([...gardenPlants, newPlant]);
-        setDraggedPlant(null);
-        setSelectedPlant(newPlant);
-      } else {
-        alert("Cannot put plant here. Too close to other plants!\n");
-        setDraggedPlant(null);
-      }
-    } else if (draggedIndex >= 0) {
-      // Move existing plant
-      const newPlants = [...gardenPlants];
-      const movedPlant = {
-        ...newPlants[draggedIndex], 
-        x: clampedX, 
-        y: clampedY
-      };
-    
-      // Check for collision with other plants when moving
-      // Pass the ID of the plant being moved to exclude it from collision check
-      const wouldCollide = checkPlantCollision(
-        movedPlant, 
-        newPlants[draggedIndex].id
-      );
-    
-      // Check for plant compatibility with other plants
-      const compatibilityWarnings = checkPlantCompatibility(
-        movedPlant, 
-        newPlants.filter(plant => plant.id !== newPlants[draggedIndex].id)
-      );
-    
-      if (!wouldCollide && compatibilityWarnings.length === 0) {
-        // No collisions and no compatibility issues
-        newPlants[draggedIndex] = movedPlant;
-        setGardenPlants(newPlants);
-        setDraggedIndex(-1);
-        
-        // Update selected plant if it was moved
-        if (selectedPlant && selectedPlant.id === newPlants[draggedIndex].id) {
-          setSelectedPlant(newPlants[draggedIndex]);
-        }
-      } else {
-        // Prepare warning messages
-        let warningMessage = "";
-        let userConfirmed = true;
-        if (wouldCollide) {
-          alert("Cannot move plant here. Too close to other plants!\n");
-          userConfirmed = false;
-        }
-        
-        else if (compatibilityWarnings.length > 0) {
-          const compatWarningText = compatibilityWarnings.map(warning => 
-            `Warning: ${warning.plant1} and ${warning.plant2} are too close (${warning.distance} ft apart). 
-    Recommended minimum distance: ${warning.minDistance} ft.
-    ${warning.warningMessage}`
-          ).join('\n\n');
-          
-          warningMessage = compatWarningText;
-          userConfirmed = window.confirm(warningMessage + "\n\nDo you want to move the plant anyway?");
-        }
-    
-        if (userConfirmed) {
-          // Force move despite warnings
-          newPlants[draggedIndex] = movedPlant;
-          setGardenPlants(newPlants);
-          setDraggedIndex(-1);
-          
-          // Update selected plant if it was moved
-          if (selectedPlant && selectedPlant.id === newPlants[draggedIndex].id) {
-            setSelectedPlant(newPlants[draggedIndex]);
-          }
+        const compatibilityResult = checkSinglePairCompatibility(plantA, plantB)
+
+        if (compatibilityResult.hasWarning) {
+          // Add IDs to each other's problem lists IN THE NEW OBJECTS
+          plantA.problemPlants.push(plantB.id)
+          plantB.problemPlants.push(plantA.id)
+
+          // Store detailed messages
+          const messageA = `Conflict with ${
+            plantB.name
+          } (${compatibilityResult.distance.toFixed(1)} ft): ${
+            compatibilityResult.message
+          } (Min: ${compatibilityResult.minDistance} ft)`
+          const messageB = `Conflict with ${
+            plantA.name
+          } (${compatibilityResult.distance.toFixed(1)} ft): ${
+            compatibilityResult.message
+          } (Min: ${compatibilityResult.minDistance} ft)`
+          plantA.warningMessages.push(messageA)
+          plantB.warningMessages.push(messageB)
         }
       }
     }
-  };
-  // Handle closing the details panel
-  const handleCloseDetails = () => {
-    setSelectedPlant(null);
-  };
-  
-  // Handle deleting a plant
-  const handleDeletePlant = (plantId) => {
-    setGardenPlants(gardenPlants.filter(plant => plant.id !== plantId));
-    setSelectedPlant(null);
-  };
 
-  // Handle garden size change
-  const handleSizeChange = (field, value) => {
-    const newValue = Math.min(21, Math.max(5, Number(value) + 1));
-    setGardenSize((prev) => ({ ...prev, [field]: newValue }));
-  };
+    // Final pass to set the hasWarning flag based on populated problemPlants
+    plantsWithData.forEach(plant => {
+      plant.hasWarning = plant.problemPlants.length > 0
+    })
+  } // else: if warnings are disabled, all plants retain hasWarning: false
 
-  // Filter plants based on search query
-  const filteredPlants = plants.filter((plant) =>
+  // Return the new array with updated objects
+  return plantsWithData
+}
+
+// --- React Component ---
+
+export default function SproutGarden () {
+  const [gardenSize, setGardenSize] = useState({ width: 10, height: 10 })
+  const [gardenPlants, setGardenPlants] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [draggedPlant, setDraggedPlant] = useState(null)
+  const [draggedIndex, setDraggedIndex] = useState(-1)
+  const [selectedPlant, setSelectedPlant] = useState(null)
+  const [enableWarnings, setEnableWarnings] = useState(true)
+
+  // --- Effect for Recalculating Warnings on Toggle ---
+  useEffect(() => {
+    // Recalculate warnings for the current garden whenever enableWarnings changes
+    setGardenPlants(prevGardenPlants =>
+      calculateWarningsForGarden(prevGardenPlants, enableWarnings)
+    )
+  }, [enableWarnings]) // Dependency array includes enableWarnings
+
+  // --- Collision Check (Spacing based on spaceRequired) ---
+  // Checks if 'plantToCheck' overlaps with any 'otherPlants' based on their spaceRequired
+  const checkSpacingCollision = (plantToCheck, otherPlants) => {
+    if (!plantToCheck) return false // Added safety check
+    return otherPlants.some(existingPlant => {
+      if (!existingPlant || plantToCheck.id === existingPlant.id) return false // Don't check against self or invalid
+
+      // Ensure spaceRequired exists and is a number
+      const spaceA = Number(plantToCheck.spaceRequired) || 0
+      const spaceB = Number(existingPlant.spaceRequired) || 0
+      if (spaceA <= 0 || spaceB <= 0) return false // Cannot collide if no space required
+
+      // Calculate the minimum required distance between centers based on spaceRequired (in pixels)
+      const minCenterDistance = (spaceA / 2 + spaceB / 2) * 40 // Assuming 40px/foot.
+
+      const actualCenterDistance = calculatePixelDistance(
+        plantToCheck,
+        existingPlant
+      )
+
+      return actualCenterDistance < minCenterDistance
+    })
+  }
+
+  // --- Event Handlers ---
+
+  const handleNewPlantDragStart = useCallback(
+    (plant, imgElement) => e => {
+      setDraggedPlant(plant) // Store the template plant info
+      try {
+        // Use try-catch for dataTransfer in case of strict browser policies
+        e.dataTransfer.setData('text/plain', plant.name || '') // Ensure name exists
+        if (imgElement) {
+          e.dataTransfer.setDragImage(imgElement, 30, 30) // Adjust offset as needed
+        }
+      } catch (error) {
+        console.warn('Could not set dataTransfer data:', error)
+      }
+    },
+    []
+  ) // No dependencies, safe to memoize
+
+  const handlePlantDragStart = useCallback(
+    index => e => {
+      if (index >= 0 && index < gardenPlants.length) {
+        setDraggedIndex(index) // Store index of the plant being moved
+        try {
+          e.dataTransfer.setData('text/plain', gardenPlants[index]?.name || '')
+        } catch (error) {
+          console.warn('Could not set dataTransfer data:', error)
+        }
+      } else {
+        console.error('Invalid index for drag start:', index)
+      }
+    },
+    [gardenPlants]
+  ) // Depends on gardenPlants
+
+  const handlePlantClick = useCallback(
+    (index, e) => {
+      // Ensure index is valid before accessing
+      if (index >= 0 && index < gardenPlants.length) {
+        setSelectedPlant(gardenPlants[index])
+      } else {
+        console.error('Invalid index clicked:', index)
+        setSelectedPlant(null)
+      }
+    },
+    [gardenPlants]
+  ) // Depends on gardenPlants
+
+  const handleDrop = useCallback(
+    e => {
+      e.preventDefault()
+      const rect = e.currentTarget.getBoundingClientRect()
+
+      // Determine which plant is being dropped (new or existing)
+      const sourcePlantData =
+        draggedPlant || (draggedIndex >= 0 ? gardenPlants[draggedIndex] : null)
+      if (!sourcePlantData) return // Nothing being dragged
+
+      // Calculate drop position
+      const dropX = e.clientX - rect.left
+      const dropY = e.clientY - rect.top
+
+      // Calculate top-left corner based on drop point and plant size (center drop)
+      const plantWidth = sourcePlantData.size?.width || 40
+      const plantHeight = sourcePlantData.size?.height || 40
+      const x = dropX - plantWidth / 2
+      const y = dropY - plantHeight / 2
+
+      // Clamp position within bounds (ensure top-left stays within bounds)
+      const maxX = gardenSize.width * 40 - plantWidth
+      const maxY = gardenSize.height * 40 - plantHeight
+      const clampedX = Math.max(0, Math.min(x, maxX))
+      const clampedY = Math.max(0, Math.min(y, maxY))
+
+      let potentialNextGarden
+      let plantBeingPlaced // The specific plant object being added or moved
+      let isMoving = draggedIndex >= 0
+
+      if (isMoving) {
+        // --- Moving Existing Plant ---
+        plantBeingPlaced = {
+          ...gardenPlants[draggedIndex],
+          x: clampedX,
+          y: clampedY
+        }
+        // Create the potential next state by replacing the moved plant
+        potentialNextGarden = gardenPlants.map((plant, index) =>
+          index === draggedIndex ? plantBeingPlaced : plant
+        )
+      } else {
+        // --- Adding New Plant ---
+        plantBeingPlaced = {
+          ...draggedPlant, // Start with template data
+          x: clampedX,
+          y: clampedY,
+          id: Date.now().toString() + Math.random(), // Ensure unique ID
+          // Initialize warning fields (will be calculated later)
+          problemPlants: [],
+          hasWarning: false,
+          warningMessages: []
+        }
+        potentialNextGarden = [...gardenPlants, plantBeingPlaced]
+      }
+
+      // --- Perform Checks ---
+
+      // 1. Check SPACING Collision against ALL OTHER plants in the potential new layout
+      const otherPlants = potentialNextGarden.filter(
+        p => p.id !== plantBeingPlaced.id
+      )
+      const wouldCollideOnSpacing = checkSpacingCollision(
+        plantBeingPlaced,
+        otherPlants
+      )
+
+      if (wouldCollideOnSpacing) {
+        alert(
+          `Cannot place ${plantBeingPlaced.name} here. Too close to other plants (spacing requirement)!`
+        )
+        // Reset drag state cleanly
+        setDraggedPlant(null)
+        setDraggedIndex(-1)
+        return
+      }
+
+      // 2. Calculate ALL Compatibility Warnings for the potential new garden state
+      const finalGardenState = calculateWarningsForGarden(
+        potentialNextGarden,
+        enableWarnings
+      )
+
+      // 3. Find the data for the specific plant *after* warning calculations
+      const placedPlantFinalData = finalGardenState.find(
+        p => p.id === plantBeingPlaced.id
+      )
+
+      // --- Handle Confirmation (if warnings enabled and issues found for *this* plant) ---
+      let userConfirmed = true
+      if (enableWarnings && placedPlantFinalData?.hasWarning) {
+        const warningText = placedPlantFinalData.warningMessages.join('\n\n')
+        userConfirmed = window.confirm(
+          `Warning: Placing/moving ${
+            placedPlantFinalData.name
+          } here causes compatibility issues:\n\n${warningText}\n\nDo you want to ${
+            isMoving ? 'move' : 'place'
+          } the plant anyway?`
+        )
+      }
+
+      // --- Update State ---
+      if (userConfirmed) {
+        setGardenPlants(finalGardenState) // Update state with the fully calculated warnings
+        setSelectedPlant(placedPlantFinalData) // Select the newly placed/moved plant (with updated warning status)
+      } // else: If user cancelled due to warning, garden state remains unchanged
+
+      // Reset drag state regardless of confirmation outcome
+      setDraggedPlant(null)
+      setDraggedIndex(-1)
+    },
+    [draggedPlant, draggedIndex, gardenPlants, gardenSize, enableWarnings]
+  ) // Added dependencies
+
+  const handleCloseDetails = useCallback(() => {
+    setSelectedPlant(null)
+  }, [])
+
+  const handleDeletePlant = useCallback(
+    plantIdToDelete => {
+      // 1. Create the potential next state (plant removed)
+      const gardenWithoutDeleted = gardenPlants.filter(
+        plant => plant.id !== plantIdToDelete
+      )
+
+      // 2. Recalculate all warnings for the remaining plants
+      const finalGardenState = calculateWarningsForGarden(
+        gardenWithoutDeleted,
+        enableWarnings
+      )
+
+      // 3. Update the state
+      setGardenPlants(finalGardenState)
+      setSelectedPlant(null) // Clear selection
+    },
+    [gardenPlants, enableWarnings]
+  ) // Add dependencies
+
+  const handleSizeChange = useCallback((field, value) => {
+    const newValue = Math.min(21, Math.max(5, Number(value) + 1))
+    setGardenSize(prev => ({ ...prev, [field]: newValue }))
+  }, []) // No dependencies, safe to memoize
+
+  const toggleWarnings = useCallback(() => {
+    setEnableWarnings(prev => !prev)
+    // The useEffect hook handles recalculating warnings based on the new 'enableWarnings' state
+  }, [])
+
+  // Filter plants for the LeftSidebar based on search query
+  // Memoize if performance becomes an issue with large `plants` array
+  const filteredPlants = plants.filter(plant =>
     plant.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
 
   const clearGarden = useCallback(() => {
-    setGardenPlants([]);
-    setSelectedPlant(null);
-  }, []);
-  
-  // Close details when clicking on canvas background
-  const handleCanvasClick = (e) => {
+    setGardenPlants([]) // Warnings implicitly cleared
+    setSelectedPlant(null)
+  }, [])
+
+  const handleCanvasClick = useCallback(e => {
     // Only handle clicks directly on the canvas, not on plants
     if (e.target === e.currentTarget) {
-      setSelectedPlant(null);
+      setSelectedPlant(null)
     }
-  };
+  }, [])
 
-  // Save garden data to file
   const saveGarden = useCallback(() => {
-    // Prepare the garden data
+    // Prepare the garden data for saving
     const gardenData = {
       gardenSize,
       gardenPlants: gardenPlants.map(plant => ({
         name: plant.name,
         x: plant.x,
         y: plant.y,
-        id: plant.id,
-        // Exclude the image object which can't be serialized
+        id: plant.id
       }))
-    };
-    
-    // Convert to JSON
-    const gardenJson = JSON.stringify(gardenData, null, 2);
-    
-    // Create a Blob with the garden data
-    const blob = new Blob([gardenJson], { type: "application/json" });
-    
-    // Create a download link
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    
-    // Set a default filename with date
-    const date = new Date();
-    const dateString = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date.getTime().toString().padStart(2, '0')}`;
-    link.download = `sprout-garden-${dateString}.json`;
-    
-    // Append to body, click to download, then remove
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    // Clean up the URL object
-    URL.revokeObjectURL(url);
-  }, [gardenSize, gardenPlants]);
+    }
+    const gardenJson = JSON.stringify(gardenData, null, 2)
+    const blob = new Blob([gardenJson], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    const date = new Date()
+    const dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date
+      .getHours()
+      .toString()
+      .padStart(2, '0')}${date.getMinutes().toString().padStart(2, '0')}${date
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}`
+    link.download = `sprout-garden-${dateString}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }, [gardenSize, gardenPlants]) // Dependencies for saving
 
-  // Load garden data from file
-  const loadGarden = useCallback((file) => {
-    const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target.result);
-        
-        // Validate the data structure
-        if (!data.gardenSize || !data.gardenPlants || !Array.isArray(data.gardenPlants)) {
-          throw new Error("Invalid garden file format");
+  const loadGarden = useCallback(
+    file => {
+      if (!file) return
+      const reader = new FileReader()
+
+      reader.onload = e => {
+        if (!e.target?.result || typeof e.target.result !== 'string') {
+          alert('Error reading file content.')
+          return
         }
-        
-        // Set the garden size
-        setGardenSize(data.gardenSize);
-        
-        // Process the plants and fully restore the plant objects
-        const loadedPlants = data.gardenPlants.map(plant => {
-          // Find the corresponding plant definition from the original plants array
-          const plantDefinition = plants.find(p => p.name === plant.name);
-          
-          if (!plantDefinition) {
-            throw new Error(`Unknown plant type: ${plant.name}`);
+        try {
+          const data = JSON.parse(e.target.result)
+          if (
+            !data.gardenSize ||
+            !data.gardenPlants ||
+            !Array.isArray(data.gardenPlants)
+          ) {
+            throw new Error('Invalid garden file format')
           }
-          
-          // Fully restore the plant object with all original properties
-          return {
-            ...plantDefinition,  // Restore original plant definition
-            x: plant.x,           // Restore saved position
-            y: plant.y,           // Restore saved position
-            id: plant.id || Date.now().toString(), // Ensure unique ID
-          };
-        });
-        
-        // Perform collision check on loaded plants
-        const nonCollidingPlants = [];
-        for (const plant of loadedPlants) {
-          // Check if the current plant collides with already placed plants
-          const wouldCollide = nonCollidingPlants.some(existingPlant => {
-            // Calculate the combined space required (in pixels)
-            const combinedSpaceRequired = (plant.spaceRequired + existingPlant.spaceRequired) * 40;
-            
-            // Calculate the distance between plant centers
-            const distance = Math.sqrt(
-              Math.pow(
-                (plant.x + (plant.size?.width || 40) / 2) - 
-                (existingPlant.x + (existingPlant.size?.width || 40) / 2), 2
-              ) + 
-              Math.pow(
-                (plant.y + (plant.size?.height || 40) / 2) - 
-                (existingPlant.y + (existingPlant.size?.height || 40) / 2), 2
+
+          // Restore plants from saved data, merging with base plant definitions
+          const loadedPlantObjects = data.gardenPlants
+            .map(savedPlant => {
+              if (!savedPlant || !savedPlant.name) return null // Basic validation
+              const plantDefinition = plants.find(
+                p => p.name === savedPlant.name
               )
-            );
-            
-            // Check if the distance is less than the combined space required
-            return distance < combinedSpaceRequired;
-          });
-          
-          // If no collision, add the plant
-          if (!wouldCollide) {
-            nonCollidingPlants.push(plant);
-          } else {
-            // Optional: Log or handle plants that cannot be placed
-            console.warn(`Plant ${plant.name} could not be placed due to spacing constraints`);
-          }
-        }
-        
-        // Set the garden plants
-        setGardenPlants(nonCollidingPlants);
-        
-        // Clear selection
-        setSelectedPlant(null);
-        
-      } catch (error) {
-        console.error("Error loading garden:", error);
-        alert(`Error loading garden: ${error.message}`);
-      }
-    };
-    
-    reader.onerror = () => {
-      console.error("Error reading garden file");
-      alert("Error reading garden file");
-    };
-    
-    // Read the file as text
-    reader.readAsText(file);
-  }, []);
+              if (!plantDefinition) {
+                console.warn(
+                  `Unknown plant type "${savedPlant.name}" found in file. Skipping.`
+                )
+                return null // Skip unknown plants
+              }
+              // Validate position data
+              const x = typeof savedPlant.x === 'number' ? savedPlant.x : 0
+              const y = typeof savedPlant.y === 'number' ? savedPlant.y : 0
 
+              return {
+                ...plantDefinition, // Base data
+                x: x,
+                y: y,
+                id: savedPlant.id || Date.now().toString() + Math.random(), // Ensure ID exists
+                // Initialize warning fields, they will be calculated next
+                problemPlants: [],
+                hasWarning: false,
+                warningMessages: []
+              }
+            })
+            .filter(p => p !== null) // Remove any nulls from skipped plants
+
+          // Calculate warnings for the loaded garden configuration
+          const finalLoadedGardenState = calculateWarningsForGarden(
+            loadedPlantObjects,
+            enableWarnings
+          ) // Use current warning toggle state
+
+          // Update state
+          setGardenSize(data.gardenSize) // Consider validating size values too
+          setGardenPlants(finalLoadedGardenState)
+          setSelectedPlant(null) // Clear selection
+        } catch (error) {
+          console.error('Error loading garden:', error)
+          alert(`Error loading garden: ${error.message}`)
+          // Optionally reset to empty state on error
+          setGardenPlants([])
+          setGardenSize({ width: 10, height: 10 })
+          setSelectedPlant(null)
+        }
+      }
+
+      reader.onerror = () => {
+        console.error('Error reading garden file')
+        alert('Error reading garden file')
+      }
+
+      reader.readAsText(file)
+    },
+    [enableWarnings]
+  ) // Dependency: enableWarnings ensures loaded state respects current toggle
+
+  // --- Render ---
   return (
-   
-      <div className="p-4 min-h-screen min-w-screen" style={{backgroundColor: "#B2D4A7"}}>
-        <Header  
-          clearGarden={clearGarden}
-          saveGarden={saveGarden}
-          loadGarden={loadGarden}
-          toggleWarnings={toggleWarnings}
-          enableWarnings={enableWarnings}
+    <div
+      className='p-4 min-h-screen min-w-screen'
+      style={{ backgroundColor: '#B2D4A7' }}
+    >
+      <Header
+        clearGarden={clearGarden}
+        saveGarden={saveGarden}
+        loadGarden={loadGarden}
+        toggleWarnings={toggleWarnings} // Pass toggle function
+        enableWarnings={enableWarnings} // Pass current state for button visuals
+      />
+      {/* Added flex-col for small screens, md:flex-row for medium+ */}
+      <div className='flex flex-col md:flex-row gap-4 max-w-8xl mx-auto mt-4'>
+        <LeftSidebar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery} // Pass setter directly
+          filteredPlants={filteredPlants}
+          handleNewPlantDragStart={handleNewPlantDragStart}
         />
-        {/* Main Content */} 
-        <div className="flex gap-4 max-w-8xl mx-auto">
-          {/* Left Sidebar */}
-          <LeftSidebar
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            filteredPlants={filteredPlants}
-            handleNewPlantDragStart={handleNewPlantDragStart}
+
+        {/* Added min-w-0 to prevent flexbox overflow issues */}
+        <div className='flex-1 bg-white p-4 rounded-lg shadow-lg overflow-hidden min-w-0'>
+          <GardenSizeControls
+            gardenSize={gardenSize}
+            handleSizeChange={handleSizeChange} // Pass the handler
           />
-          
-          {/* Main Garden Area */}
-          <div className="flex-1 bg-white p-4 rounded-lg shadow-lg">
-            <GardenSizeControls  
+          {/* Added relative positioning & mt-4 */}
+          <div className='relative mt-4' onClick={handleCanvasClick}>
+            {/* Ensure GardenCanvas receives updated gardenPlants with warnings */}
+            <GardenCanvas
               gardenSize={gardenSize}
-              handleSizeChange={handleSizeChange}
+              handleDrop={handleDrop}
+              gardenPlants={gardenPlants}
+              handlePlantClick={handlePlantClick}
+              handlePlantDragStart={handlePlantDragStart}
+              selectedPlantId={selectedPlant?.id}
             />
-            <div onClick={handleCanvasClick}>
-              <GardenCanvas
-                gardenSize={gardenSize}
-                handleDrop={handleDrop}
-                gardenPlants={gardenPlants}
-                handlePlantClick={handlePlantClick}
-                handlePlantDragStart={handlePlantDragStart}
-              />
-            </div>
           </div>
-          
-          {/* Right Sidebar - Plant Details */}
-          <RightSidebar 
-            selectedPlant={selectedPlant}
-            onClose={handleCloseDetails}
-            onDelete={handleDeletePlant}
-          />
         </div>
-        
+
+        <RightSidebar
+          selectedPlant={selectedPlant} // Pass the full selected plant object
+          onClose={handleCloseDetails}
+          onDelete={handleDeletePlant} // Pass the correct handler
+          // Optional: Pass these if needed in RightSidebar for displaying context/warnings
+          // plantCompatibility={plantCompatibility}
+          // allPlantsInGarden={gardenPlants}
+        />
       </div>
-  );
+    </div>
+  )
 }
