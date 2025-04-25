@@ -1,8 +1,8 @@
 type USDADataEntry = {
-  PRICE_WHOLESALE: number;
-  PRICE_GROWN: number;
-  AMOUNT_TYPE: string;
-};
+  PRICE_WHOLESALE: number
+  PRICE_GROWN: number
+  AMOUNT_TYPE: string
+}
 
 //Sets a PRICE_WHOLESALE (retail price) and a PRICE_GROWN (DIY) for each plant
 //Amount to be added later
@@ -16,37 +16,37 @@ export const USDAData = {
   BLUEBERRIES: {
     PRICE_WHOLESALE: 1.07,
     PRICE_GROWN: 0.27,
-    AMOUNT_TYPE: "LB",
+    AMOUNT_TYPE: 'LB'
   },
   BROCCOLI: {
     PRICE_WHOLESALE: 130.49,
     PRICE_GROWN: 32.62,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   CABBAGE: {
     PRICE_WHOLESALE: 68.67,
     PRICE_GROWN: 17.17,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   CARROTS: {
     PRICE_WHOLESALE: 62.41,
-    PRICE_GROWN: 15.60,
-    AMOUNT_TYPE: "CWT",
+    PRICE_GROWN: 15.6,
+    AMOUNT_TYPE: 'CWT'
   },
   CORN: {
     PRICE_WHOLESALE: 21.11,
     PRICE_GROWN: 5.28,
-    AMOUNT_TYPE: "BU",
+    AMOUNT_TYPE: 'BU'
   },
   GARLIC: {
-    PRICE_WHOLESALE: 278.60,
+    PRICE_WHOLESALE: 278.6,
     PRICE_GROWN: 69.65,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   BEANS: {
     PRICE_WHOLESALE: 54.55,
     PRICE_GROWN: 13.64,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   /*LILLIES: {
     PRICE_WHOLESALE: 0,
@@ -56,22 +56,22 @@ export const USDAData = {
   ONIONS: {
     PRICE_WHOLESALE: 45.05,
     PRICE_GROWN: 11.26,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   PEPPERS: {
     PRICE_WHOLESALE: 240.03,
     PRICE_GROWN: 60.01,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   POTATOES: {
     PRICE_WHOLESALE: 30.75,
     PRICE_GROWN: 7.69,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   PUMPKINS: {
     PRICE_WHOLESALE: 34.43,
     PRICE_GROWN: 8.61,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   /*ROSES: {
     PRICE_WHOLESALE: 0,
@@ -91,13 +91,13 @@ export const USDAData = {
   STRAWBERRIES: {
     PRICE_WHOLESALE: 168.32,
     PRICE_GROWN: 42.08,
-    AMOUNT_TYPE: "CWT",
+    AMOUNT_TYPE: 'CWT'
   },
   TOMATOES: {
     PRICE_WHOLESALE: 61.24,
     PRICE_GROWN: 15.31,
-    AMOUNT_TYPE: "CWT",
-  },
+    AMOUNT_TYPE: 'CWT'
+  }
   /*TULIPS: {
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
@@ -108,4 +108,4 @@ export const USDAData = {
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
   },*/
-};
+}
