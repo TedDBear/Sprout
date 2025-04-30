@@ -1,4 +1,6 @@
 // app/api/usda-prices/route.ts
+
+//Used to act as a proxy server to work alongside the main dev server, allows API function
 import { NextResponse } from 'next/server';
 
 const USDA_API_KEY = '51605E56-04A3-3098-8826-7256841F1C95';

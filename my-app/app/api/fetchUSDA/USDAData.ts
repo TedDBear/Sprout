@@ -7,8 +7,9 @@ type USDADataEntry = {
 //Sets a PRICE_WHOLESALE (retail price) and a PRICE_GROWN (DIY) for each plant
 //Amount to be added later
 //File mostly used for the possibility the USDA Server is offline or for values not pullable from QuickStats API
+//File is used with the accurate pull names for each plant to the API
 export const USDAData = {
-  /*BASIL: {
+  /*BASIL: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
@@ -48,7 +49,7 @@ export const USDAData = {
     PRICE_GROWN: 13.64,
     AMOUNT_TYPE: "CWT",
   },
-  /*LILLIES: {
+  /*LILLIES: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
@@ -73,17 +74,17 @@ export const USDAData = {
     PRICE_GROWN: 8.61,
     AMOUNT_TYPE: "CWT",
   },
-  /*ROSES: {
+  /*ROSES: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
   },
-  ROSEMARY: {
+  ROSEMARY: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
   },
-  SAGE: {
+  SAGE: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
@@ -98,12 +99,12 @@ export const USDAData = {
     PRICE_GROWN: 15.31,
     AMOUNT_TYPE: "CWT",
   },
-  /*TULIPS: {
+  /*TULIPS: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
   },
-  WATERMELONS: {
+  WATERMELONS: { //NOT CURRENTLY SUPPORTED BY QUICKSTATS API
     PRICE_WHOLESALE: 0,
     PRICE_GROWN: 0,
     AMOUNT_TYPE: "CWT",
