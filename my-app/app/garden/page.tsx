@@ -691,9 +691,11 @@ export default function SproutGarden () {
   // --- Collision Check (Spacing based on spaceRequired) ---
   // Checks if 'plantToCheck' overlaps with any 'otherPlants' based on their spaceRequired
   const checkSpacingCollision = (plantToCheck, otherPlants) => {
-    if (!plantToCheck) return false // Added safety check
     return otherPlants.some(existingPlant => {
-      if (!existingPlant || plantToCheck.id === existingPlant.id) return false // Don't check against self or invalid
+      if (!existingPlant || plantToCheck.id === existingPlant.id) 
+        {
+          return false // Don't check against self or invalid
+        }
 
       // Ensure spaceRequired exists and is a number
       const spaceA = Number(plantToCheck.spaceRequired) || 0
@@ -701,7 +703,7 @@ export default function SproutGarden () {
       if (spaceA <= 0 || spaceB <= 0) return false // Cannot collide if no space required
 
       // Calculate the minimum required distance between centers based on spaceRequired (in pixels)
-      const minCenterDistance = (spaceA / 2 + spaceB / 2) * 40 // Assuming 40px/foot.
+      const minCenterDistance = (spaceA + spaceB) * 40 // Assuming 40px/foot and that the circles displayed cannot intersect.
 
       const actualCenterDistance = calculatePixelDistance(
         plantToCheck,
