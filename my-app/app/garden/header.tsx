@@ -52,7 +52,7 @@ export default function Header ({
           onClick={event => turnWarningsOnorOff()}
           className='warningToggle'
         >
-          Incompatilbilty warnings: {warningsOnorOff}
+          Incompatilbility warnings: {warningsOnorOff}
         </Button>
       </div>
       <h1 className='text-4xl font-extrabold text-green-800 tracking-wide'>
