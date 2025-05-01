@@ -39,11 +39,13 @@ export default function HomePage() {
     getData();
   }, [selectedPlant]);
 
-   const toggleFaq = (index: number) => {
+  // 
+   const toggleFaq = (index: number) => { 
     setFaqOpen(openFaq === index ? null : index);
   }
 
-  const faq = [
+  // Constant for F.A.Q. questions and answers. 
+  const faq = [ 
     {
       question: "How do I use Sprout?",
       answer: "1. Click 'Start Your Garden' <br>2. Search your desired plant in the left plant menu, then simply drag and drop them onto the garden bed grid!"
@@ -75,6 +77,7 @@ export default function HomePage() {
         className="flex-1 flex flex-col items-center justify-center bg-gradient-to-b from-[#B2D4A7] to-[#DAE9D5] p-8"
         style={{ minHeight: '50vh' }}
       >
+        
         <div className="flex flex-col items-center justify-center h-full w-full">
           <Button 
             asChild 
@@ -96,7 +99,7 @@ export default function HomePage() {
               {
                 title: "Learn",
                 description: "Discover information about your plants needs.",
-                icon: "📚" // maybe we can make icons to go here, but for now its emojis. Could also remove these, but the added visuality was nice I thought. 
+                icon: "📚" 
               },
               {
                 title: "Plan",
@@ -105,7 +108,7 @@ export default function HomePage() {
               },
               {
                 title: "Grow",
-                description: "Then, go out and plant it in your backyard!", //I think these points sound alright, but if anyone has anything that flows better feel free to change. 
+                description: "Then, go out and plant it in your backyard!", 
                 icon: "🌱"
               }
             ].map((feature, index) => (
@@ -155,12 +158,13 @@ export default function HomePage() {
       </div>
 
 {/* F.A.Q. Section */}
-      <div className="bg-white py-8">
+      <div className="bg-white py-8"> 
         <div className="border-2 border-gray-200 rounded-lg mx-2 p-8 max-w-7xl mx-auto">
-          <h2 className="text-[50px] font-bold text-green-800 mb-6 text-center">F.A.Q</h2>
+          <h2 className="text-[50px] font-bold text-green-800 mb-6 text-center">F.A.Q</h2> 
           
           <div className="space-y-2">
-          {faq.map((item, index) => (
+          {faq.map((item, index) => ( 
+              // The F.A.Q. is collapsible. 
               <div key={index} className="border-b border-gray-200 pb-2">
                 <button
                   onClick={() => toggleFaq(index)}
